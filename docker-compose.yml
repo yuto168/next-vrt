@@ -1,8 +1,9 @@
+version: '3.7'
 services:
-  app:
+  next:
     build:
       context: .
-      dockerfile: /infra/next/Dockerfile
+      dockerfile: ./infra/next/Dockerfile
     tty: true
     volumes:
       - ./src:/app
@@ -16,13 +17,13 @@ services:
   playwright:
     build:
       context: .
-      dockerfile: /infra/playwright/Dockerfile
+      dockerfile: ./infra/playwright/Dockerfile
     tty: true
     volumes:
       - ./playwright:/playwright
       - /tmp/.X11-unix:/tmp/.X11-unix
     environment:
-      - DISPLAY :0
+      DISPLAY: "0"
     # command: sh -c "npx playwright test --headed"
     ports:
       - "9323:9323"
