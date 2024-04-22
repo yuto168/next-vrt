@@ -1,0 +1,29 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: /infra/next/Dockerfile
+    tty: true
+    volumes:
+      - ./src:/app
+    environment:
+      # hot reloadを有効にするためらしい
+      - WATCHPACK_POLLING=true
+    command: sh -c "npm run dev"
+    ports:
+      - "3000:3000"
+    container_name: next
+  playwright:
+    build:
+      context: .
+      dockerfile: /infra/playwright/Dockerfile
+    tty: true
+    volumes:
+      - ./playwright:/playwright
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    environment:
+      - DISPLAY :0
+    # command: sh -c "npx playwright test --headed"
+    ports:
+      - "9323:9323"
+    container_name: playwright
