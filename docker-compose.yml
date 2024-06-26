@@ -31,10 +31,12 @@ services:
     environment:
       DISPLAY: :0
     command: npx playwright test --ui
-    # network_mode: "host"
     container_name: playwright
-    networks:
-      - common
+    depends_on:
+      - next
+    network_mode: "host"
+    # networks:
+    #   - common
     # extra_hosts:
     #   - "localhost:backend"  # localhostをbackendコンテナにマッピング
 networks:
