@@ -3,15 +3,13 @@
   "version": "1.0.0",
   "scripts": {
     "vrt": "playwright test",
-    "vrt-head": "playwright test --ui",
-    "reg": "reg-cli vrt/before/ vrt/after vrt/diff -R vrt/reports/report.html -J vrt/reports/report.json"
+    "vrt-head": "playwright test --ui"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
     "reg-cli": "^0.18.1",
-    "reg-suit": "^0.14.3",
     "typescript": "^5.4.5"
   },
   "devDependencies": {
@@ -26,6 +24,7 @@
     "prettier": "^3.2.5",
     "reg-keygen-git-hash-plugin": "^0.14.3",
     "reg-notify-github-plugin": "^0.14.3",
-    "reg-publish-s3-plugin": "^0.14.3"
+    "reg-publish-s3-plugin": "^0.14.3",
+    "reg-suit": "^0.14.4"
   }
 }
