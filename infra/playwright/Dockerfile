@@ -1,8 +1,9 @@
-FROM mcr.microsoft.com/playwright:v1.40.0-jammy
+FROM mcr.microsoft.com/playwright:v1.43.0-jammy
 
 WORKDIR /playwright
 
 RUN apt-get update && apt-get install -y \
     curl \
-    git \
-    vim \
+    git 
+
+RUN npm install -g npm && npm init playwright@latest -y

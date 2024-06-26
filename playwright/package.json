@@ -1,5 +1,5 @@
 {
-  "name": "playright",
+  "name": "playwright",
   "version": "1.0.0",
   "scripts": {
     "vrt": "playwright test",
@@ -10,13 +10,12 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "playright": "^0.0.22",
     "reg-cli": "^0.18.1",
     "reg-suit": "^0.14.3",
     "typescript": "^5.4.5"
   },
   "devDependencies": {
-    "@playwright/test": "^1.43.0",
+    "@playwright/test": "^1.43.1",
     "@tsconfig/recommended": "^1.0.6",
     "@types/node": "^20.12.7",
     "@typescript-eslint/eslint-plugin": "^7.7.0",

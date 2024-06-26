@@ -5,26 +5,38 @@ services:
       context: .
       dockerfile: ./infra/next/Dockerfile
     tty: true
+    working_dir: /app
     volumes:
-      - ./src:/app
+      - ./front:/app
     environment:
       # hot reloadを有効にするためらしい
       - WATCHPACK_POLLING=true
-    command: sh -c "npm run dev"
+    command: sh -c "chmod 777 /app -R && npm run dev"
+    networks:
+      - common
     ports:
       - "3000:3000"
+      - "6006:6006" # storybook
     container_name: next
   playwright:
     build:
       context: .
       dockerfile: ./infra/playwright/Dockerfile
     tty: true
+    ipc: host # メモリ不足エラー対策
     volumes:
       - ./playwright:/playwright
       - /tmp/.X11-unix:/tmp/.X11-unix
+    working_dir: /playwright
     environment:
-      DISPLAY: "0"
-    # command: sh -c "npx playwright test --headed"
-    ports:
-      - "9323:9323"
+      DISPLAY: :0
+    command: npx playwright test --ui
+    # network_mode: "host"
     container_name: playwright
+    networks:
+      - common
+    # extra_hosts:
+    #   - "localhost:backend"  # localhostをbackendコンテナにマッピング
+networks:
+  common:
+    driver: bridge # ネットワークモードをbridgeに設定
