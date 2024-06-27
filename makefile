@@ -4,8 +4,10 @@
 # GUIでテストを実行
 vrt:
 	docker compose exec playwright bash -c "npm run vrt-head"
-hless:
+vrt-hless:
 	docker compose exec playwright bash -c "npm run vrt"
+reg:
+	docker compose exec playwright bash -c "npx reg-suit run"
 playwright:
 	docker compose exec playwright bash
 next:
