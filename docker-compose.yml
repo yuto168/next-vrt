@@ -35,6 +35,8 @@ services:
     depends_on:
       - next
     network_mode: "host"
+    env_file:
+      - ./playwright/.env # 環境変数を読み込む
     # networks:
     #   - common
     # extra_hosts:
