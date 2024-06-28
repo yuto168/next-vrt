@@ -12,6 +12,10 @@
     "reg-publish-s3-plugin": {
       "bucketName": "${S3_BUCKET_NAME}",
       "enableACL": false
+    },
+    "reg-simple-keygen-plugin": {
+      "expectedKey": "hoge",
+      "actualKey": "fuga"
     }
   }
 }
