@@ -1,0 +1,10 @@
+name: VRT Tests
+# Manually trigger the workflow
+on:
+  workflow_dispatch: 
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-20.
+    steps:
+      - run: echo "Running Playwright tests"
