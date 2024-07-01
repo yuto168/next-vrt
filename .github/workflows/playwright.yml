@@ -16,7 +16,31 @@ jobs:
           echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> ./playwright/.env
           echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> ./playwright/.env
           echo "s3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}" >> ./playwright/.env
+
+      - name: Cache Docker layers
+        id: docker-cache
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+
+      - name: Build and cache Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache,mode=max
+          tags: your-dockerhub-username/your-repo:latest
+          push: false
+      
       - name: Docker container
         run: docker compose up -d
       - name: check container status
         run: docker ps
+      - name: Run Playwright tests in Docker container
+        run: docker exec playwright npm run vrt
+      - name: run reg-suit
+        run: docker compose exec playwright bash -c "npx reg-suit run"
