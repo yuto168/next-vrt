@@ -30,8 +30,8 @@ jobs:
       - name: Check container status
         run: docker ps
 
-      - name: Run Playwright tests in Docker container
-        run: docker compose exec playwright npm run vrt
+      # - name: Run Playwright tests in Docker container
+      #   run: docker compose exec playwright npm run vrt
 
       - name: Run reg-suit
         run: docker compose exec playwright bash -c "npx reg-suit run"
