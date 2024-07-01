@@ -31,16 +31,19 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-
 
-      - name: Build and cache Docker images
+      - name: Build Docker images with cache
         run: |
           mkdir -p /tmp/.buildx-cache
-          docker buildx build --cache-from type=local,src=/tmp/.buildx-cache --cache-to type=local,dest=/tmp/.buildx-cache,mode=max -f docker-compose.yml .
+          docker buildx bake --file docker-compose.yml --cache-from type=local,src=/tmp/.buildx-cache --cache-to type=local,dest=/tmp/.buildx-cache,mode=max
 
-      - name: Docker container
+      - name: Start Docker containers
         run: docker compose up -d
-      - name: check container status
+
+      - name: Check container status
         run: docker ps
+
       - name: Run Playwright tests in Docker container
         run: docker exec playwright npm run vrt
-      - name: run reg-suit
+
+      - name: Run reg-suit
         run: docker compose exec playwright bash -c "npx reg-suit run"
