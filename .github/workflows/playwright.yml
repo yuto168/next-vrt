@@ -3,11 +3,12 @@ name: VRT Tests
 on:
   workflow_dispatch:
 jobs:
+  # job id
   vrt-docker:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4 # リポジトリをチェックアウト
       - run: echo "Running Playwright tests"
       - name: Create env file(.envファイルを作成)
         run: |
@@ -33,5 +34,5 @@ jobs:
       # - name: Run Playwright tests in Docker container
       #   run: docker compose exec playwright npm run vrt
 
-      - name: Run reg-suit
-        run: docker compose exec playwright bash -c "npx reg-suit run"
+      - name: Take screenshots
+        run: docker compose exec playwright bash -c "npm run vrt"
