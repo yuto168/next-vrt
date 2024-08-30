@@ -35,4 +35,4 @@ jobs:
       #   run: docker compose exec playwright npm run vrt
 
       - name: Take screenshots
-        run: docker compose exec playwright bash -c "npm run vrt"
+        run: docker compose exec react-reg-suit-playwright bash -c "npm run vrt"
