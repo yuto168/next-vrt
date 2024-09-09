@@ -13,6 +13,9 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4 # リポジトリをチェックアウト
 
+      - name: github info
+        run: echo ${{ github }}
+
       - name: Create env file(.envファイルを作成)
         run: |
           touch ./playwright/.env
