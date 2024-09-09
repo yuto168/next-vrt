@@ -22,7 +22,7 @@ jobs:
           echo "s3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}" >> ./playwright/.env
 
       - name: Start Docker containers
-        run: docker compose up -d
+        run: docker compose up -d --build
 
       - name: Check container status
         run: docker ps

@@ -13,8 +13,8 @@ RUN apt-get update && \
 # Copy the rest of the project files
 COPY ./playwright .
 
-# Install dependencies
-RUN npm ci
+# 依存関係のインストール
+RUN npm install
 
 # Run Playwright tests or other commands as necessary
 CMD ["npx", "playwright", "test"]
