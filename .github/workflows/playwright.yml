@@ -27,8 +27,14 @@ jobs:
       - name: Check container status
         run: docker ps
 
-      - name: npm install
-        run: docker compose exec playwright bash -c "ls -l && npm list"
+      - name: Install dependencies
+        run: docker compose exec playwright bash -c "npm install"
+
+      - name: Verify dependencies
+        run: docker compose exec playwright bash -c "npm list"
+
+      # - name: npm install
+      #   run: docker compose exec playwright bash -c "ls -l && npm list"
 
       # - name: Run Playwright tests in Docker container
       #   run: npm run vrt
