@@ -8,15 +8,16 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v4 # リポジトリをチェックアウト
-      - run: echo "Running Playwright tests"
-      - name: Create env file(.envファイルを作成)
-        run: |
-          touch ./playwright/.env
-          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> ./playwright/.env
-          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> ./playwright/.env
-          echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> ./playwright/.env
-          echo "s3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}" >> ./playwright/.env
+      - name: checkout
+        uses: actions/checkout@v4 # リポジトリをチェックアウト
+      # - run: echo "Running Playwright tests"
+      # - name: Create env file(.envファイルを作成)
+      #   run: |
+      #     touch ./playwright/.env
+      #     echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> ./playwright/.env
+      #     echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> ./playwright/.env
+      #     echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> ./playwright/.env
+      #     echo "s3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}" >> ./playwright/.env
 
       - name: Start Docker containers
         run: docker compose up -d
