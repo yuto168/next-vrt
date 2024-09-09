@@ -5,19 +5,18 @@ FROM mcr.microsoft.com/playwright:v1.43.0-jammy
 WORKDIR /playwright
 
 # Install necessary dependencies
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+# RUN apt-get update && \
+#     apt-get install -y --no-install-recommends && \
+#     apt-get clean && \
+#     rm -rf /var/lib/apt/lists/*
     
-# Copy the rest of the project files
-COPY ./playwright .
+COPY ./playwright/package*.json .
 
 # 依存関係のインストール
-RUN npm install
+RUN npm ci
 
-# Set environment variable to skip interactive prompts
-ENV CI=1
+COPY ./playwright .
+RUN npm run build
 
 # Run Playwright tests or other commands as necessary
-CMD ["npx", "playwright", "test"]
+CMD ["npm", "test"]
