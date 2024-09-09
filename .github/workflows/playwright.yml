@@ -24,8 +24,11 @@ jobs:
           echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> ./playwright/.env
           echo "s3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}" >> ./playwright/.env
 
+      - name: Build Docker containers
+        run: docker compose build
+
       - name: Start Docker containers
-        run: docker compose up -d --build
+        run: docker compose build --abort-on-container-exit
 
       - name: Check container status
         run: docker ps
