@@ -27,11 +27,17 @@ jobs:
       - name: Check container status
         run: docker ps
 
-      - name: Install dependencies
-        run: docker compose exec playwright bash -c "npm install"
+      - name: check memory in usage
+        run: free -m
 
-      - name: Verify dependencies
-        run: docker compose exec playwright bash -c "npm list"
+      - name: check memory in playwrite container
+        run: docker compose exec playwright free -m
+
+      # - name: Install dependencies
+      #   run: docker compose exec playwright bash -c "npm install"
+
+      # - name: Verify dependencies
+      #   run: docker compose exec playwright bash -c "npm list"
 
       # - name: npm install
       #   run: docker compose exec playwright bash -c "ls -l && npm list"
