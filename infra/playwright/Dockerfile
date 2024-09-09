@@ -16,5 +16,8 @@ COPY ./playwright .
 # 依存関係のインストール
 RUN npm install
 
+# Set environment variable to skip interactive prompts
+ENV CI=1
+
 # Run Playwright tests or other commands as necessary
 CMD ["npx", "playwright", "test"]
