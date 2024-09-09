@@ -28,7 +28,7 @@ jobs:
         run: docker compose exec playwright bash -c "npm i"
 
       - name: Run Playwright tests in Docker container
-        run: docker compose exec playwright npm run vrt
+        run: docker compose exec playwright bash -c "npm run vrt"
 
       # - name: Set up Docker Buildx
       #   id: buildx
