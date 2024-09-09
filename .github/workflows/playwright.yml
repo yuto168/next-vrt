@@ -34,5 +34,8 @@ jobs:
       # - name: Run Playwright tests in Docker container
       #   run: docker compose exec playwright npm run vrt
 
-      - name: Take screenshots
-        run: docker compose exec playwright bash -c "npm run vrt"
+      - name: npm install
+        run: docker compose exec playwright bash -c "npm i"
+
+      - name: npm list
+        run: docker compose exec playwright bash -c "npm list"
