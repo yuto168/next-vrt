@@ -68,4 +68,9 @@ jobs:
       #     push: false
       #     tags: ${{ env.TAGS }}
       #     cache-from: type=local,src=/tmp/.buildx-cache
-      #     cache-to: type=local,dest=/tmp/.buildx-cache
+      #     cache-to: type=local,dest=/tmp/.buildx-cache]
+
+      # 前のジョブの成功失敗に関係なく実行
+      - name: Cleanup Docker environment
+        if: always()
+        run: docker compose down --rmi all --volumes --remove-orphans
