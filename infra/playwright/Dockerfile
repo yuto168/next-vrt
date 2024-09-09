@@ -16,7 +16,6 @@ COPY ./playwright/package*.json .
 RUN npm ci
 
 COPY ./playwright .
-RUN npm run build
 
 # Run Playwright tests or other commands as necessary
 CMD ["npm", "test"]
