@@ -6,7 +6,7 @@ jobs:
   # job id
   vrt-docker:
     timeout-minutes: 60
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v4 # リポジトリをチェックアウト
       - run: echo "Running Playwright tests"
@@ -28,7 +28,7 @@ jobs:
         run: docker compose exec playwright bash -c "npm i"
 
       - name: Run Playwright tests in Docker container
-        run: docker compose exec playwright bash -c "npm run vrt"
+        run: npm run vrt
 
       # - name: Set up Docker Buildx
       #   id: buildx
