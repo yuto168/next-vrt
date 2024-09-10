@@ -1,7 +1,10 @@
 name: VRT Tests
 # Manually trigger the workflow
 on:
-  workflow_dispatch:
+  # 一時的にプッシュをトリガーにしている
+  push:
+    branches:
+      - master
 jobs:
   # job id
   vrt-docker:
