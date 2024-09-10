@@ -32,8 +32,14 @@ jobs:
       - name: Build Docker containers
         run: docker compose build
 
-      - name: Start Docker containers
-        run: docker compose up --abort-on-container-exit
+      # - name: Start Docker containers
+      #   run: docker compose up --abort-on-container-exit
+
+      - name: Set up Docker Compose
+        run: docker-compose up -d --abort-on-container-exit
+
+      - name: List directory contents
+        run: docker-compose exec next ls -la /app
 
       - name: Check container status
         run: docker ps
