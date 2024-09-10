@@ -1,3 +1,5 @@
+# TODO: buildキャッシュ＋playwright ss取得＋reg-suit実行
+
 name: VRT Tests
 # Manually trigger the workflow
 on:
