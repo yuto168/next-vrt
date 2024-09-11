@@ -3,8 +3,8 @@ FROM node:18.17.1
 WORKDIR /app
 
 COPY ./front/package*.json .
-RUN npm install
+RUN npm ci
 
 COPY ./front/ .
 
-# CMD ["npm", "run", "dev"]
+CMD ["npm i && npm run dev"]

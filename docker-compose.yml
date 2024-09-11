@@ -1,7 +1,6 @@
 services:
   next:
     build:
-      context: .
       dockerfile: ./infra/next/Dockerfile
     tty: true
     working_dir: /app
@@ -17,9 +16,9 @@ services:
       - "3000:3000"
       - "6006:6006" # storybook
     container_name: next
+
   playwright:
     build:
-      context: .
       dockerfile: ./infra/playwright/Dockerfile
     tty: true
     ipc: host # メモリ不足エラー対策
@@ -29,13 +28,13 @@ services:
     working_dir: /playwright
     environment:
       DISPLAY: :0
-    # command: sh -c "./wait.sh && npm install && npm run vrt"
     container_name: playwright
     depends_on:
       - next
     network_mode: "host"
     env_file:
       - ./playwright/.env # 環境変数を読み込む
+
 networks:
   common:
     driver: bridge # ネットワークモードをbridgeに設定
