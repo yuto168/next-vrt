@@ -32,11 +32,11 @@ jobs:
       - name: Build Docker containers
         run: docker compose build
 
-      # - name: Start Docker containers
-      #   run: docker compose up --abort-on-container-exit
+      - name: Start Docker containers
+        run: docker compose up --abort-on-container-exit
 
-      - name: Set up Docker Compose next
-        run: docker compose up next -d && docker compose run playwright curl http://next:3000
+      # - name: Set up Docker Compose next
+      #   run: docker compose up next -d && docker compose run playwright curl http://next:3000
 
       - name: Check container status
         run: docker ps
