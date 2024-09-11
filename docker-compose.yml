@@ -10,7 +10,7 @@ services:
     environment:
       # hot reloadを有効にするためらしい
       - WATCHPACK_POLLING=true
-    # command: sh -c "npm install && npm run dev"
+    command: sh -c "npm install && npm run dev"
     networks:
       - common
     ports:
