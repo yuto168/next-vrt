@@ -38,6 +38,9 @@ jobs:
       - name: Set up Docker Compose
         run: docker compose up next
 
+      - name: Set up Docker Compose
+        run: docker compose up playwright
+
       - name: List directory contents
         run: docker compose exec next ls -la /app
 
