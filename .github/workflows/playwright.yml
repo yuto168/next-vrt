@@ -36,7 +36,7 @@ jobs:
       #   run: docker compose up --abort-on-container-exit
 
       - name: Set up Docker Compose
-        run: docker compose up next
+        run: docker compose up next -d
 
       - name: Set up Docker Compose
         run: docker compose up playwright
