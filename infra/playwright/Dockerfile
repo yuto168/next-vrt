@@ -19,7 +19,7 @@ RUN ls -l
 
 
 # RUNでやった権限付与がなぜリセットされるのか
-CMD ["sh", "-c", "chmod +x /wait.sh && /wait.sh localhost:3000 && npm i && npm run vrt"]
+CMD ["sh", "-c", "chmod +x /wait.sh && /wait.sh next:3000 && npm i && npm run vrt"]
 # CMD ["/wait.sh", "localhost:3000", "&&", "npm", "test"]
 # Run Playwright tests or other commands as necessary
 # CMD ["sh", "-c","ls -l && wait.sh localhost:3000 && npm test"]
