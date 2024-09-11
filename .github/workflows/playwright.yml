@@ -38,6 +38,9 @@ jobs:
       - name: Set up Docker Compose next
         run: docker compose up next -d
 
+      - name: Check container status
+        run: docker ps
+
       # - name: check curl from playwright container localhost
       #   run: docker compose run playwright curl http://localhost:3000
 
