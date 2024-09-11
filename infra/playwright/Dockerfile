@@ -17,7 +17,7 @@ RUN npm ci
 
 COPY ./playwright .
 
-RUN chmod +x /wait.sh
+RUN chmod +x wait.sh
 
 # Run Playwright tests or other commands as necessary
 CMD ["sh", "-c", "./wait.sh localhost:3000 && npm test"]
