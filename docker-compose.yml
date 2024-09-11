@@ -29,7 +29,7 @@ services:
     working_dir: /playwright
     environment:
       DISPLAY: :0
-    command: sh -c "npm install && npm run vrt"
+    # command: sh -c "./wait.sh && npm install && npm run vrt"
     container_name: playwright
     depends_on:
       - next
