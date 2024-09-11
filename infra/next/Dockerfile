@@ -7,4 +7,4 @@ RUN npm install
 
 COPY ./front/ .
 
-CMD ["npm", "run", "dev"]
+# CMD ["npm", "run", "dev"]
