@@ -21,4 +21,5 @@ RUN ls -l
 RUN chmod +x wait.sh
 
 # Run Playwright tests or other commands as necessary
-CMD ["sh", "-c","ls -l && wait.sh localhost:3000 && npm test"]
+CMD ["wait.sh", "localhost:3000", "&&", "npm", "test"]
+# CMD ["sh", "-c","ls -l && wait.sh localhost:3000 && npm test"]
