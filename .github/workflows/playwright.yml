@@ -35,10 +35,16 @@ jobs:
       # - name: Start Docker containers
       #   run: docker compose up --abort-on-container-exit
 
-      - name: Set up Docker Compose
+      - name: Set up Docker Compose next
         run: docker compose up next -d
 
-      - name: Set up Docker Compose
+      - name: check curl from playwright container localhost
+        run: docker compose exec playwright curl http://localhost:3000
+
+      - name: check curl from playwright container next
+        run: docker compose exec playwright curl http://next:3000
+
+      - name: Set up Docker Compose playwright
         run: docker compose up playwright
 
       - name: List directory contents
