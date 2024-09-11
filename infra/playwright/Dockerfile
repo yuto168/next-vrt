@@ -16,9 +16,11 @@ COPY ./playwright/package*.json .
 RUN npm ci
 
 COPY ./playwright .
+RUN ls -l
+
+COPY ./playwright/wait.sh /wait.sh
 RUN chmod +x wait.sh
 
-COPY ./playwright .
 RUN ls -l
 
 
