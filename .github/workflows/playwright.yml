@@ -35,83 +35,19 @@ jobs:
       - name: Start Docker containers
         run: docker compose up --abort-on-container-exit
 
-      # - name: Set up Docker Compose next
-      #   run: docker compose up next -d && docker compose run playwright curl http://next:3000
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: |
+            playwright/playwright-report/
+          retention-days: 30
 
       - name: Check container status
         run: docker ps
 
-      # - name: check curl from playwright container localhost
-      #   run: docker compose run playwright curl http://localhost:3000
-
-      # - name: check curl from playwright container next
-      #   run: docker compose run playwright curl http://next:3000
-
-      - name: Set up Docker Compose playwright
-        run: docker compose up playwright
-
-      - name: List directory contents
-        run: docker compose exec next ls -la /app
-
       - name: Check container status
         run: docker ps
-
-      - name: check memory in usage
-        run: free -m
-
-      - name: check memory in playwrite container
-        run: docker compose exec playwright free -m
-
-      # - name: Install dependencies
-      #   run: docker compose exec playwright bash -c "npm install"
-
-      # - name: Verify dependencies
-      #   run: docker compose exec playwright bash -c "npm list"
-
-      # - name: npm install
-      #   run: docker compose exec playwright bash -c "ls -l && npm list"
-
-      # - name: Run Playwright tests in Docker container
-      #   run: npm run vrt
-
-      # - name: Set up Docker Buildx
-      #   id: buildx
-      #   uses: docker/setup-buildx-action@v1
-
-      # - name: Cache Docker layers
-      #   uses: actions/cache@v2
-      #   # キャッシュの保存先と復元先を指定
-      #   with:
-      #     path: /tmp/.buildx-cache
-      #     key: ${{ github.ref }}-${{ github.sha }} # github.ref はブランチ名、github.sha はコミットハッシュ
-      #     restore-keys: |
-      #       ${{ github.ref }}-${{ github.sha }}
-      #       ${{ github.ref }}
-      #       refs/head/main
-
-      # - name: create tag
-      #   run: |
-      #     SHA=${{ github.sha }}
-      #     TAG=${IMAGE}:$(TZ=UTC-9 date '+%Y%m')-${SHA:0:7}
-      #     if [ "${{ github.ref }}" == "refs/heads/main" ]; then
-      #       LATEST=${IMAGE}:latest
-      #       echo "TAGS=$TAG,$LATEST" >> $GITHUB_ENV
-      #     else
-      #       echo "TAGS=$TAG" >> $GITHUB_ENV
-      #     fi
-      #     echo TAG $
-
-      # - name: Build and push
-      #   id: docker_build
-      #   uses: docker/build-push-action@v2
-      #   with:
-      #     context: ./
-      #     file: ./Dockerfile
-      #     builder: ${{ steps.buildx.outputs.name }}
-      #     push: false
-      #     tags: ${{ env.TAGS }}
-      #     cache-from: type=local,src=/tmp/.buildx-cache
-      #     cache-to: type=local,dest=/tmp/.buildx-cache]
 
       # 前のジョブの成功失敗に関係なく実行
       - name: Cleanup Docker environment
