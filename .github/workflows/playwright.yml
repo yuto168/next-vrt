@@ -39,10 +39,10 @@ jobs:
         run: docker compose up next -d
 
       - name: check curl from playwright container localhost
-        run: docker compose exec playwright curl http://localhost:3000
+        run: docker compose run playwright curl http://localhost:3000
 
       - name: check curl from playwright container next
-        run: docker compose exec playwright curl http://next:3000
+        run: docker compose run playwright curl http://next:3000
 
       - name: Set up Docker Compose playwright
         run: docker compose up playwright
