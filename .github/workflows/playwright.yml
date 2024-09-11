@@ -36,7 +36,7 @@ jobs:
       #   run: docker compose up --abort-on-container-exit
 
       - name: Set up Docker Compose
-        run: docker compose up --abort-on-container-exit
+        run: docker compose up next
 
       - name: List directory contents
         run: docker compose exec next ls -la /app
