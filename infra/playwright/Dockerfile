@@ -16,9 +16,11 @@ COPY ./playwright/package*.json .
 RUN npm ci
 
 COPY ./playwright .
-
-RUN ls -l
 RUN chmod +x wait.sh
+
+COPY ./playwright .
+RUN ls -l
+
 
 # Run Playwright tests or other commands as necessary
 CMD ["wait.sh", "localhost:3000", "&&", "npm", "test"]
