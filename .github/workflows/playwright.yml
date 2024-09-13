@@ -1,9 +1,7 @@
 name: VRT Tests
 on:
-  # 一時的にプッシュをトリガーにしている
-  push:
-    branches:
-      - master
+  workflow_dispatch:
+
 jobs:
   # job id
   vrt-docker:
