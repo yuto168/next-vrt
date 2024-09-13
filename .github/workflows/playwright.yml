@@ -1,5 +1,4 @@
 name: VRT Tests
-# Manually trigger the workflow
 on:
   # 一時的にプッシュをトリガーにしている
   push:
@@ -15,6 +14,8 @@ jobs:
 
       - name: checkout
         uses: actions/checkout@v4 # リポジトリをチェックアウト
+        with:
+          ref: master # 親ブランチを指定
 
       - name: github info
         run: echo ${{ github }}
@@ -36,7 +37,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: actual-images ${{ github.sha }}
+          name: screen-shot ${{ github.sha }} # gitshaでスクリーンショットを保存
           path: |
             playwright/directory_contains_actual_images/
           retention-days: 30
