@@ -20,10 +20,10 @@ jobs:
         with:
           # ここでテストケースは子供だけどfrontディレクトリは親ブランチのものを使う
           ref: master # 親ブランチを指定 ここまでわかったことは親ブランチの内容にチェックアウトしたら、その内容でコードもビルドするって話　現に親ブランチの内容でスクリーンショットがとられていた
-          sparse-checkout: front # frontディレクトリだけをチェックアウト
+          sparse-checkout: front # frontディレクトリだけをチェックアウト　これで親ブランチのfrontディレクトリでテストが行われたらok
 
-      - name: github info
-        run: echo ${{ github }}
+      - name: check directory
+        run: ls -la
 
       - name: Create env file(.envファイルを作成)
         run: |
