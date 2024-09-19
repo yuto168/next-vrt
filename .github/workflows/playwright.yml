@@ -15,22 +15,6 @@ jobs:
         with:
           ref: ${{ github.ref }} # 現在のブランチを指定
 
-      # TODO: sparse-checkoutでfrontディレクトリだけを上書きできるようにしたい
-      # - name: check current directory
-      #   run: ls -la front
-
-      # - name: overwrite front directory
-      #   uses: actions/checkout@v4 # リポジトリをチェックアウト
-      #   with:
-      #     # ここでテストケースは子供だけどfrontディレクトリは親ブランチのものを使う
-      #     ref: master # 親ブランチを指定 ここまでわかったことは親ブランチの内容にチェックアウトしたら、その内容でコードもビルドするって話　現に親ブランチの内容でスクリーンショットがとられていた
-      #     # path: temp-front # チェックアウトするディレクトリを指定
-      #     # frontディレクトリだけをチェックアウト　これで親ブランチのfrontディレクトリでテストが行われたらok
-      #     sparse-checkout: front/
-
-      - name: check directory after overwrite
-        run: ls -la
-
       - name: Create env file(.envファイルを作成)
         run: |
           touch ./playwright/.env
@@ -40,25 +24,6 @@ jobs:
           echo "s3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}" >> ./playwright/.env
 
       - uses: docker/setup-buildx-action@v2
-
-      # 2. キャッシュ設定
-      # - name: Cache Docker layers - App
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: /tmp/.buildx-cache-app # Buildxのキャッシュを指定
-      #     key: ${{ github.ref }}-${{ github.sha }} # キャッシュのキーを指定
-      #     restore-keys: |
-      #       ${{ github.ref }}
-      #       refs/head/main
-
-      # - name: Cache Docker layers - DB
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: /tmp/.buildx-cache-db # Buildxのキャッシュを指定
-      #     key: ${{ github.ref }}-${{ github.sha }} # キャッシュのキーを指定
-      #     restore-keys: |
-      #       ${{ github.ref }}
-      #       refs/head/main
 
       - name: Cache front Docker layers
         uses: docker/build-push-action@v4
