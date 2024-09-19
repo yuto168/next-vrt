@@ -12,15 +12,19 @@ jobs:
 
       - name: checkout current branch
         uses: actions/checkout@v4 # リポジトリをチェックアウト
-        with:
-          ref: ${{ github.ref }} # 現在のブランチを指定
+        # with:
+        #   ref: ${{ github.ref }} # 現在のブランチを指定
 
-      - name: checkout
+      - name: check current directory
+        run: ls -la
+
+      - name: overwrite front directory
         uses: actions/checkout@v4 # リポジトリをチェックアウト
         with:
           # ここでテストケースは子供だけどfrontディレクトリは親ブランチのものを使う
           ref: master # 親ブランチを指定 ここまでわかったことは親ブランチの内容にチェックアウトしたら、その内容でコードもビルドするって話　現に親ブランチの内容でスクリーンショットがとられていた
           sparse-checkout: front # frontディレクトリだけをチェックアウト　これで親ブランチのfrontディレクトリでテストが行われたらok
+          path: temp-front # チェックアウトするディレクトリを指定
 
       - name: check directory
         run: ls -la
