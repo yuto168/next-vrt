@@ -23,8 +23,10 @@ jobs:
         with:
           # ここでテストケースは子供だけどfrontディレクトリは親ブランチのものを使う
           ref: master # 親ブランチを指定 ここまでわかったことは親ブランチの内容にチェックアウトしたら、その内容でコードもビルドするって話　現に親ブランチの内容でスクリーンショットがとられていた
-          sparse-checkout: front # frontディレクトリだけをチェックアウト　これで親ブランチのfrontディレクトリでテストが行われたらok
           path: temp-front # チェックアウトするディレクトリを指定
+          # frontディレクトリだけをチェックアウト　これで親ブランチのfrontディレクトリでテストが行われたらok
+          sparse-checkout: |
+            front
 
       - name: check directory after overwrite
         run: ls -la temp-front
