@@ -10,10 +10,17 @@ jobs:
     steps:
       - run: echo "Running Playwright tests"
 
+      - name: checkout current branch
+        uses: actions/checkout@v4 # リポジトリをチェックアウト
+        with:
+          ref: ${{ github.ref }} # 現在のブランチを指定
+
       - name: checkout
         uses: actions/checkout@v4 # リポジトリをチェックアウト
         with:
-          ref: master # 親ブランチを指定
+          # ここでテストケースは子供だけどfrontディレクトリは親ブランチのものを使う
+          ref: master # 親ブランチを指定 ここまでわかったことは親ブランチの内容にチェックアウトしたら、その内容でコードもビルドするって話　現に親ブランチの内容でスクリーンショットがとられていた
+          sparse-checkout: front # frontディレクトリだけをチェックアウト
 
       - name: github info
         run: echo ${{ github }}
