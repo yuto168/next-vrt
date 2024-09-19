@@ -46,19 +46,19 @@ jobs:
         with:
           context: .
           file: ./infra/playwright/Dockerfile
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=playwright
+          cache-to: type=gha,mode=max,scope=playwright
 
       - name: Cache front Docker layers
         uses: docker/build-push-action@v4
         with:
           context: .
           file: ./infra/next/Dockerfile
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=front
+          cache-to: type=gha,mode=max,scope=front
 
       - name: Build Docker containers
-        run: docker compose build
+        run: docker compose build --progress=plain --build-arg BUILDKIT_INLINE_CACHE=1
 
       - name: Start Docker containers
         run: docker compose up --abort-on-container-exit
