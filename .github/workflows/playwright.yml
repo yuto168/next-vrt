@@ -64,6 +64,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           load: true
+          push: false
           context: .
           file: ./infra/next/Dockerfile
           tags: my-app-react-reg-suit-next
@@ -74,6 +75,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           load: true
+          push: false
           context: .
           file: ./infra/playwright/Dockerfile
           tags: my-app-react-reg-suit-playwright
