@@ -16,7 +16,7 @@ jobs:
         #   ref: ${{ github.ref }} # 現在のブランチを指定
 
       - name: check current directory
-        run: ls -la
+        run: ls -la front
 
       - name: overwrite front directory
         uses: actions/checkout@v4 # リポジトリをチェックアウト
@@ -26,8 +26,8 @@ jobs:
           sparse-checkout: front # frontディレクトリだけをチェックアウト　これで親ブランチのfrontディレクトリでテストが行われたらok
           path: temp-front # チェックアウトするディレクトリを指定
 
-      - name: check directory
-        run: ls -la
+      - name: check directory after overwrite
+        run: ls -la front
 
       - name: Create env file(.envファイルを作成)
         run: |
