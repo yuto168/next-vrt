@@ -40,9 +40,20 @@ jobs:
           echo "s3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}" >> ./playwright/.env
 
       - uses: docker/setup-buildx-action@v2
-      - uses: docker/build-push-action@v4
+
+      - name: Cache playwright Docker layers
+        uses: docker/build-push-action@v4
         with:
           context: .
+          file: ./infra/playwright/Dockerfile
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Cache front Docker layers
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./infra/next/Dockerfile
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
