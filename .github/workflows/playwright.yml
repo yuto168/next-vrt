@@ -41,9 +41,29 @@ jobs:
 
       - uses: docker/setup-buildx-action@v2
 
+      # 2. キャッシュ設定
+      # - name: Cache Docker layers - App
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: /tmp/.buildx-cache-app # Buildxのキャッシュを指定
+      #     key: ${{ github.ref }}-${{ github.sha }} # キャッシュのキーを指定
+      #     restore-keys: |
+      #       ${{ github.ref }}
+      #       refs/head/main
+
+      # - name: Cache Docker layers - DB
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: /tmp/.buildx-cache-db # Buildxのキャッシュを指定
+      #     key: ${{ github.ref }}-${{ github.sha }} # キャッシュのキーを指定
+      #     restore-keys: |
+      #       ${{ github.ref }}
+      #       refs/head/main
+
       - name: Cache front Docker layers
         uses: docker/build-push-action@v4
         with:
+          load: true
           context: .
           file: ./infra/next/Dockerfile
           tags: my-app-react-reg-suit-next
@@ -53,6 +73,7 @@ jobs:
       - name: Cache playwright Docker layers
         uses: docker/build-push-action@v4
         with:
+          load: true
           context: .
           file: ./infra/playwright/Dockerfile
           tags: my-app-react-reg-suit-playwright
