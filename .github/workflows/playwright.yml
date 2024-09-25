@@ -36,13 +36,13 @@ jobs:
       - name: copy master-front to front
         run: cp -r master-front/front front && rm -rf master-front
 
-      # - name: Create env file(.envファイルを作成)
-      #   run: |
-      #     touch ./playwright/.env
-      #     echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> ./playwright/.env
-      #     echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> ./playwright/.env
-      #     echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> ./playwright/.env
-      #     echo "s3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}" >> ./playwright/.env
+      - name: Create env file(.envファイルを作成)
+        run: |
+          touch ./playwright/.env
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> ./playwright/.env
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> ./playwright/.env
+          echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> ./playwright/.env
+          echo "s3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}" >> ./playwright/.env
 
       - uses: docker/setup-buildx-action@v2
 
