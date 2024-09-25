@@ -16,7 +16,7 @@ jobs:
           ref: ${{ github.ref }} # 現在のブランチを指定
 
       - name: get base branch sha
-        run: echo "${{ github.event.inputs.base_branch }}" # ベースブランチのgitshaを表示
+        run: echo git show-branch | grep '*' | grep -v "$(git rev-parse --abbrev-ref HEAD)" | head -1 | awk -F'[]~^[]' '{print $2}' # ベースブランチのgitshaを表示
 
       # - name: download expected images
       #   uses: actions/download-artifact@v2
