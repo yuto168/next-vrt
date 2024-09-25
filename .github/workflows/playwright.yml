@@ -22,6 +22,8 @@ jobs:
           # frontディレクトリだけをチェックアウト
           sparse-checkout: |
             front
+          sparse-checkout-cone-mode: false
+          path: master-front
 
       - name: list files
         run: ls -la
