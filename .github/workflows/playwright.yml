@@ -22,12 +22,11 @@ jobs:
           # frontディレクトリだけをチェックアウト
           sparse-checkout: |
             front
-          path: master-front
 
       - name: list files
         run: ls -la
 
-      - name: list front files
+      - name: list master-front files
         run: ls -la master-front
 
       # - name: Create env file(.envファイルを作成)
