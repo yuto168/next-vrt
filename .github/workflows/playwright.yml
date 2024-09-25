@@ -34,7 +34,7 @@ jobs:
 
       # masterブランチのfrontディレクトリをfrontディレクトリにコピーして、元のmaster-frontディレクトリを削除
       - name: copy master-front to front
-        run: cp -r master-front/front front && rm -rf master-front
+        run: rm -rf front && cp -r master-front/front front
 
       - name: list front files after copy
         run: ls -la front
