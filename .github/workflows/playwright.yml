@@ -15,51 +15,60 @@ jobs:
         with:
           ref: ${{ github.ref }} # 現在のブランチを指定
 
-      - name: Create env file(.envファイルを作成)
-        run: |
-          touch ./playwright/.env
-          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> ./playwright/.env
-          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> ./playwright/.env
-          echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> ./playwright/.env
-          echo "s3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}" >> ./playwright/.env
-
-      - uses: docker/setup-buildx-action@v2
-
-      - name: Cache front Docker layers
-        uses: docker/build-push-action@v4
+      - name: checkout master branch
+        uses: actions/checkout@v4 # リポジトリをチェックアウト
         with:
-          load: true
-          push: false
-          context: .
-          file: ./infra/next/Dockerfile
-          tags: my-app-react-reg-suit-next
-          cache-from: type=gha,scope=front
-          cache-to: type=gha,mode=max,scope=front
+          ref: master # masterブランチを指定
+          # frontディレクトリだけをチェックアウト
+          sparse-checkout: |
+            front
+          path: master-front
 
-      - name: Cache playwright Docker layers
-        uses: docker/build-push-action@v4
-        with:
-          load: true
-          push: false
-          context: .
-          file: ./infra/playwright/Dockerfile
-          tags: my-app-react-reg-suit-playwright
-          cache-from: type=gha,scope=playwright
-          cache-to: type=gha,mode=max,scope=playwright
+      # - name: Create env file(.envファイルを作成)
+      #   run: |
+      #     touch ./playwright/.env
+      #     echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> ./playwright/.env
+      #     echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> ./playwright/.env
+      #     echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> ./playwright/.env
+      #     echo "s3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}" >> ./playwright/.env
 
-      - name: Build Docker containers
-        run: docker compose build --progress=plain --build-arg BUILDKIT_INLINE_CACHE=1
+      # - uses: docker/setup-buildx-action@v2
 
-      - name: Start Docker containers
-        run: docker compose up --abort-on-container-exit
+      # - name: Cache front Docker layers
+      #   uses: docker/build-push-action@v4
+      #   with:
+      #     load: true
+      #     push: false
+      #     context: .
+      #     file: ./infra/next/Dockerfile
+      #     tags: my-app-react-reg-suit-next
+      #     cache-from: type=gha,scope=front
+      #     cache-to: type=gha,mode=max,scope=front
 
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: screen-shot ${{ github.sha }} # gitshaでスクリーンショットを保存
-          path: |
-            playwright/directory_contains_actual_images/
-          retention-days: 30
+      # - name: Cache playwright Docker layers
+      #   uses: docker/build-push-action@v4
+      #   with:
+      #     load: true
+      #     push: false
+      #     context: .
+      #     file: ./infra/playwright/Dockerfile
+      #     tags: my-app-react-reg-suit-playwright
+      #     cache-from: type=gha,scope=playwright
+      #     cache-to: type=gha,mode=max,scope=playwright
+
+      # - name: Build Docker containers
+      #   run: docker compose build --progress=plain --build-arg BUILDKIT_INLINE_CACHE=1
+
+      # - name: Start Docker containers
+      #   run: docker compose up --abort-on-container-exit
+
+      # - uses: actions/upload-artifact@v4
+      #   if: always()
+      #   with:
+      #     name: screen-shot ${{ github.sha }} # gitshaでスクリーンショットを保存
+      #     path: |
+      #       playwright/directory_contains_actual_images/
+      #     retention-days: 30
 
       # 前のジョブの成功失敗に関係なく実行
       - name: Cleanup Docker environment
