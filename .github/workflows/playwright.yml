@@ -47,6 +47,9 @@ jobs:
           echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> ./playwright/.env
           echo "s3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}" >> ./playwright/.env
 
+      - name: list git files
+        run: ls -la .github/workflows
+
       - name: call docker run workflow
         uses: ./.github/workflows/docker-run.yml
 
