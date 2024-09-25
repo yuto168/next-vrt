@@ -24,6 +24,9 @@ jobs:
             front
           path: master-front
 
+      - name: list files
+        run: ls -la
+
       # - name: Create env file(.envファイルを作成)
       #   run: |
       #     touch ./playwright/.env
