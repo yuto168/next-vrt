@@ -25,8 +25,8 @@ jobs:
           sparse-checkout-cone-mode: false
           path: master-front
 
-      - name: list files
-        run: ls -la
+      - name: list front files
+        run: ls -la front
 
         # master-frontディレクトリのfrontディレクトリを表示
       - name: list master-front files
@@ -35,6 +35,9 @@ jobs:
       # masterブランチのfrontディレクトリをfrontディレクトリにコピーして、元のmaster-frontディレクトリを削除
       - name: copy master-front to front
         run: cp -r master-front/front front && rm -rf master-front
+
+      - name: list front files after copy
+        run: ls -la front
 
       - name: Create env file(.envファイルを作成)
         run: |
