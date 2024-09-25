@@ -2,7 +2,7 @@ name: composite action
 
 runs:
   using: "composite"
-  
+
   steps:
     - uses: docker/setup-buildx-action@v2
     - name: Cache front Docker layers
@@ -29,6 +29,9 @@ runs:
 
     - name: Build Docker containers
       run: docker compose build --progress=plain --build-arg BUILDKIT_INLINE_CACHE=1
+      shell: bash
 
     - name: Start Docker containers
       run: docker compose up --abort-on-container-exit
+      shell: bash
+
