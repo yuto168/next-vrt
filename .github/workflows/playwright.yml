@@ -28,8 +28,9 @@ jobs:
       - name: list files
         run: ls -la
 
+        # master-frontディレクトリのfrontディレクトリを表示
       - name: list master-front files
-        run: ls -la master-front
+        run: ls -la master-front/front
 
       # - name: Create env file(.envファイルを作成)
       #   run: |
