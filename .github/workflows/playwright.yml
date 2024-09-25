@@ -50,6 +50,11 @@ jobs:
       - name: list git files
         run: ls -la .github/workflows
 
+      - name: checkout current branch
+        uses: actions/checkout@v4 # リポジトリをチェックアウト
+        with:
+          ref: ${{ github.ref }} # 現在のブランチを指定
+
       - name: call docker run workflow
         uses: ./.github/workflows/docker-run.yml
 
