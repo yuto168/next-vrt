@@ -73,7 +73,7 @@ jobs:
       #       playwright/directory_contains_actual_images/
       #     retention-days: 30
 
-      # 前のジョブの成功失敗に関係なく実行
-      - name: Cleanup Docker environment
-        if: always()
-        run: docker compose down --rmi all --volumes --remove-orphans
+      # # 前のジョブの成功失敗に関係なく実行
+      # - name: Cleanup Docker environment
+      #   if: always()
+      #   run: docker compose down --rmi all --volumes --remove-orphans
