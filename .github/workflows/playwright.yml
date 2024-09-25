@@ -15,6 +15,15 @@ jobs:
         with:
           ref: ${{ github.ref }} # 現在のブランチを指定
 
+      - name: get base branch sha
+        run: echo "${{ github.base_ref }}" # ベースブランチのgitshaを表示
+
+      # - name: download expected images
+      #   uses: actions/download-artifact@v2
+      #   with:
+      #     # 親ブランチのgitshaでスクリーンショットを取得
+      #     name: screenshot ${{ github.event.before }}
+
       # - name: checkout master branch
       #   uses: actions/checkout@v4 # リポジトリをチェックアウト
       #   with:
@@ -47,8 +56,8 @@ jobs:
       #     echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> ./playwright/.env
       #     echo "s3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}" >> ./playwright/.env
 
-      - name: call docker run workflow
-        uses: ./.github/actions/docker-run
+      # - name: call docker run workflow
+      #   uses: ./.github/actions/docker-run
 
       - uses: docker/setup-buildx-action@v2
 
