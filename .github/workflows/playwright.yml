@@ -15,29 +15,29 @@ jobs:
         with:
           ref: ${{ github.ref }} # 現在のブランチを指定
 
-      - name: checkout master branch
-        uses: actions/checkout@v4 # リポジトリをチェックアウト
-        with:
-          ref: master # masterブランチを指定
-          # frontディレクトリだけをチェックアウト
-          sparse-checkout: |
-            front
-          sparse-checkout-cone-mode: false
-          path: master-front
+      # - name: checkout master branch
+      #   uses: actions/checkout@v4 # リポジトリをチェックアウト
+      #   with:
+      #     ref: master # masterブランチを指定
+      #     # frontディレクトリだけをチェックアウト
+      #     sparse-checkout: |
+      #       front
+      #     sparse-checkout-cone-mode: false
+      #     path: master-front
 
-      - name: list front files
-        run: ls -la front
+      # - name: list front files
+      #   run: ls -la front
 
-        # master-frontディレクトリのfrontディレクトリを表示
-      - name: list master-front files
-        run: ls -la master-front/front
+      #   # master-frontディレクトリのfrontディレクトリを表示
+      # - name: list master-front files
+      #   run: ls -la master-front/front
 
-      # masterブランチのfrontディレクトリをfrontディレクトリにコピーして、元のmaster-frontディレクトリを削除
-      - name: copy master-front to front
-        run: rm -rf front && cp -r master-front/front front
+      # # masterブランチのfrontディレクトリをfrontディレクトリにコピーして、元のmaster-frontディレクトリを削除
+      # - name: copy master-front to front
+      #   run: rm -rf front && cp -r master-front/front front
 
-      - name: list front files after copy
-        run: ls -la front
+      # - name: list front files after copy
+      #   run: ls -la front
 
       - name: Create env file(.envファイルを作成)
         run: |
@@ -47,35 +47,38 @@ jobs:
           echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> ./playwright/.env
           echo "s3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}" >> ./playwright/.env
 
-      - uses: docker/setup-buildx-action@v2
+      - name: call docker run workflow
+        uses: ./.github/workflows/docker-run.yml
 
-      - name: Cache front Docker layers
-        uses: docker/build-push-action@v4
-        with:
-          load: true
-          push: false
-          context: .
-          file: ./infra/next/Dockerfile
-          tags: my-app-react-reg-suit-next
-          cache-from: type=gha,scope=front
-          cache-to: type=gha,mode=max,scope=front
+      # - uses: docker/setup-buildx-action@v2
 
-      - name: Cache playwright Docker layers
-        uses: docker/build-push-action@v4
-        with:
-          load: true
-          push: false
-          context: .
-          file: ./infra/playwright/Dockerfile
-          tags: my-app-react-reg-suit-playwright
-          cache-from: type=gha,scope=playwright
-          cache-to: type=gha,mode=max,scope=playwright
+      # - name: Cache front Docker layers
+      #   uses: docker/build-push-action@v4
+      #   with:
+      #     load: true
+      #     push: false
+      #     context: .
+      #     file: ./infra/next/Dockerfile
+      #     tags: my-app-react-reg-suit-next
+      #     cache-from: type=gha,scope=front
+      #     cache-to: type=gha,mode=max,scope=front
 
-      - name: Build Docker containers
-        run: docker compose build --progress=plain --build-arg BUILDKIT_INLINE_CACHE=1
+      # - name: Cache playwright Docker layers
+      #   uses: docker/build-push-action@v4
+      #   with:
+      #     load: true
+      #     push: false
+      #     context: .
+      #     file: ./infra/playwright/Dockerfile
+      #     tags: my-app-react-reg-suit-playwright
+      #     cache-from: type=gha,scope=playwright
+      #     cache-to: type=gha,mode=max,scope=playwright
 
-      - name: Start Docker containers
-        run: docker compose up --abort-on-container-exit
+      # - name: Build Docker containers
+      #   run: docker compose build --progress=plain --build-arg BUILDKIT_INLINE_CACHE=1
+
+      # - name: Start Docker containers
+      #   run: docker compose up --abort-on-container-exit
 
       - uses: actions/upload-artifact@v4
         if: always()

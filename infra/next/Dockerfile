@@ -5,6 +5,7 @@ WORKDIR /app
 COPY ./front/package*.json .
 RUN npm ci
 
-COPY ./front/ .
+# volumeしているのでcopyは不要かも
+# COPY ./front/ .
 
 CMD ["npm i && npm run dev"]

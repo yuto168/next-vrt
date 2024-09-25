@@ -1,0 +1,45 @@
+name: Reusable workflow example
+
+on:
+  workflow_call:
+    inputs:
+      config-path:
+        required: true
+        type: string
+    secrets:
+      token:
+        required: true
+
+jobs:
+  docker-run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: docker/setup-buildx-action@v2
+
+      - name: Cache front Docker layers
+        uses: docker/build-push-action@v4
+        with:
+          load: true
+          push: false
+          context: .
+          file: ./infra/next/Dockerfile
+          tags: my-app-react-reg-suit-next
+          cache-from: type=gha,scope=front
+          cache-to: type=gha,mode=max,scope=front
+
+      - name: Cache playwright Docker layers
+        uses: docker/build-push-action@v4
+        with:
+          load: true
+          push: false
+          context: .
+          file: ./infra/playwright/Dockerfile
+          tags: my-app-react-reg-suit-playwright
+          cache-from: type=gha,scope=playwright
+          cache-to: type=gha,mode=max,scope=playwright
+
+      - name: Build Docker containers
+        run: docker compose build --progress=plain --build-arg BUILDKIT_INLINE_CACHE=1
+
+      - name: Start Docker containers
+        run: docker compose up --abort-on-container-exit
