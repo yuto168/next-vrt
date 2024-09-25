@@ -19,6 +19,8 @@ jobs:
         id: get_sha
         run: echo "::set-output name=sha::$(git show-branch | grep '*' | grep -v \"$(git rev-parse --abbrev-ref HEAD)\" | head -1 | awk -F'[]~^[]' '{print $2}')"
 
+      - name: echo base branch
+        run: echo ${{ steps.get_sha.outputs.sha }}
       # - name: download expected images
       #   uses: actions/download-artifact@v2
       #   with:
