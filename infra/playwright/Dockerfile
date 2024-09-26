@@ -15,4 +15,4 @@ COPY ./playwright/wait.sh /wait.sh
 RUN chmod +x /wait.sh
 
 # RUNでやった権限付与がなぜリセットされるのか
-CMD ["sh", "-c", "chmod +x /wait.sh && /wait.sh next:3000 && npm i && npm run vrt"]
+CMD ["bash", "-c", "chmod +x /wait.sh && /wait.sh next:3000 && npm i && /bin/bash"]

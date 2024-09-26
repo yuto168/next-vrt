@@ -1,3 +1,4 @@
 directory_contains_actual_images/
 .next/
 node_modules/
+vrt/

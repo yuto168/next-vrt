@@ -3,13 +3,19 @@
   "version": "1.0.0",
   "scripts": {
     "vrt": "playwright test",
-    "vrt-head": "playwright test --ui"
+    "vrt-head": "playwright test --ui",
+    "ss-before": "npm run clean-ss-before && playwright test test/before",
+    "ss-after": "npm run clean-ss-after && playwright test test/after",
+    "reg": "reg-cli vrt/before/ vrt/after/ vrt/diff -R vrt/reports/report.html -J vrt/reports/report.json -S -M 0.10",
+    "clean-ss-after": "rimraf vrt/after",
+    "clean-ss-before": "rimraf vrt/before"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
     "reg-cli": "^0.18.1",
+    "rimraf": "^6.0.1",
     "typescript": "^5.4.5"
   },
   "devDependencies": {

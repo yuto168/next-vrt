@@ -25,11 +25,11 @@ jobs:
           echo "Default branch: ${{ github.base_ref }}"
           echo "Default branch sha: ${{ github.event.pull_request.base.sha }}"
 
-      # - name: download expected images
-      #   uses: actions/download-artifact@v2
-      #   with:
-      #     # 親ブランチのgitshaでスクリーンショットを取得
-      #     name: screenshot ${{ github.event.before }}
+      - name: download expected images
+        uses: actions/download-artifact@v2
+        with:
+          # 親ブランチのgitshaでスクリーンショットを取得
+          name: screenshot ${{ github.event.pull_request.base.sha }}
 
       # - name: checkout master branch
       #   uses: actions/checkout@v4 # リポジトリをチェックアウト
