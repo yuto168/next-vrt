@@ -15,8 +15,8 @@ jobs:
         with:
           ref: ${{ github.ref }} # 現在のブランチを指定
 
-      - name: echo github
-        run: git merge-base feature-parent-branch-test master
+      # - name: echo github
+      #   run: git merge-base feature-parent-branch-test master
 
       - name: Get common ancestor commit
         run: |
