@@ -21,7 +21,9 @@ jobs:
       - name: Display results
         run: |
           echo "Current branch: ${{ github.ref }}"
+          echo "Current branch sha: ${{ github.sha }}"
           echo "Default branch: ${{ github.base_ref }}"
+          echo "Default branch sha: ${{ github.base_ref.sha }}"
       # - name: download expected images
       #   uses: actions/download-artifact@v2
       #   with:
