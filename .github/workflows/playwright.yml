@@ -102,7 +102,7 @@ jobs:
         run: ls -la playwright/
 
       - name: after ss
-        run: make ss-after
+        run: make vrt-ss-after
 
       # 存在チェック
       - name: list playwright files
