@@ -32,38 +32,6 @@ jobs:
           # 親ブランチのgitshaでスクリーンショットを取得
           name: screenshot ${{ github.event.pull_request.base.sha }}
 
-      # - name: checkout master branch
-      #   uses: actions/checkout@v4 # リポジトリをチェックアウト
-      #   with:
-      #     ref: master # masterブランチを指定
-      #     # frontディレクトリだけをチェックアウト
-      #     sparse-checkout: |
-      #       front
-      #     sparse-checkout-cone-mode: false
-      #     path: master-front
-
-      # - name: list front files
-      #   run: ls -la front
-
-      #   # master-frontディレクトリのfrontディレクトリを表示
-      # - name: list master-front files
-      #   run: ls -la master-front/front
-
-      # # masterブランチのfrontディレクトリをfrontディレクトリにコピーして、元のmaster-frontディレクトリを削除
-      # - name: copy master-front to front
-      #   run: rm -rf front && cp -r master-front/front front
-
-      # - name: list front files after copy
-      #   run: ls -la front
-
-      # - name: Create env file(.envファイルを作成)
-      #   run: |
-      #     touch ./playwright/.env
-      #     echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> ./playwright/.env
-      #     echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> ./playwright/.env
-      #     echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> ./playwright/.env
-      #     echo "s3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}" >> ./playwright/.env
-
       # - name: call docker run workflow
       #   uses: ./.github/actions/docker-run
 
@@ -110,6 +78,35 @@ jobs:
       # 存在チェック ss-after
       - name: list playwright files
         run: ls -la playwright/vrt/after
+
+        # baseブランチのfrontコードを取得
+      - name: checkout master branch
+        uses: actions/checkout@v4 # リポジトリをチェックアウト
+        with:
+          ref: master # masterブランチを指定
+          # frontディレクトリだけをチェックアウト
+          sparse-checkout: |
+            front
+          sparse-checkout-cone-mode: false
+          path: master-front
+
+      - name: list front files
+        run: ls -la front
+
+        # master-frontディレクトリのfrontディレクトリを表示
+      - name: list master-front files
+        run: ls -la master-front/front
+
+      # masterブランチのfrontディレクトリをfrontディレクトリにコピーして、元のmaster-frontディレクトリを削除
+      - name: copy master-front to front
+        run: rm -rf front && cp -r master-front/front front
+
+      - name: list front files after copy
+        run: ls -la front
+
+        # frontコンテナの再起動
+      - name: frontコンテナの再起動
+        run: docker compose restart next
 
       # beforeのスクリーンショットを取得＋reg-cliによる比較
       - name: before ss
