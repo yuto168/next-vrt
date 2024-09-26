@@ -8,4 +8,4 @@ RUN npm ci
 # volumeしているのでcopyは不要かも
 # COPY ./front/ .
 
-CMD ["npm i && npm run dev"]
+# CMD ["npm i && npm run dev"]
