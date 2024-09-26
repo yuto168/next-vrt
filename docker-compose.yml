@@ -7,6 +7,7 @@ services:
     working_dir: /app
     volumes:
       - ./front:/app
+      - next-node-modules:/app/node_modules
     environment:
       # hot reloadを有効にするためらしい
       - WATCHPACK_POLLING=true
@@ -26,6 +27,7 @@ services:
     ipc: host # メモリ不足エラー対策
     volumes:
       - ./playwright:/playwright
+      - playwright-node-modules:/playwright/node_modules
       - /tmp/.X11-unix:/tmp/.X11-unix
     working_dir: /playwright
     environment:
@@ -40,3 +42,7 @@ services:
 networks:
   common:
     driver: bridge # ネットワークモードをbridgeに設定
+
+volumes:
+  next-node-modules:
+  playwright-node-modules:
