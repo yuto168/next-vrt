@@ -23,16 +23,6 @@ jobs:
       - name: Get current branch name
         run: echo "CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_ENV
 
-      - name: Get base branch SHA
-        run: |
-          BASE_SHA=$(git rev-parse origin/${{ github.event.inputs.base_branch }})
-          echo "BASE_SHA=$BASE_SHA" >> $GITHUB_ENV
-
-      - name: Get current branch SHA
-        run: |
-          CURRENT_SHA=$(git rev-parse HEAD)
-          echo "CURRENT_SHA=$CURRENT_SHA" >> $GITHUB_ENV
-
       - name: Display results
         run: |
           echo "Current branch: ${{ env.CURRENT_BRANCH }}"
