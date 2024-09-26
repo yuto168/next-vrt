@@ -23,6 +23,25 @@ jobs:
           DEFAULT_BRANCH=$(git remote show origin | grep 'HEAD branch' | cut -d' ' -f5)
           echo "DEFAULT_BRANCH=${DEFAULT_BRANCH}" >> $GITHUB_ENV
 
+      - name: Get base commit SHA
+        run: |
+          BASE_BRANCH="${{ env.DEFAULT_BRANCH }}"
+          if [ "${{ env.CURRENT_BRANCH }}" = "$BASE_BRANCH" ]; then
+            # 現在のブランチがデフォルトブランチの場合、1つ前のコミットを使用
+            BASE_SHA=$(git rev-parse HEAD~1)
+          else
+            # それ以外の場合、merge-baseを使用
+            BASE_SHA=$(git merge-base ${{ env.CURRENT_BRANCH }} $BASE_BRANCH)
+          fi
+          echo "Base commit SHA: $BASE_SHA"
+          echo "BASE_SHA=$BASE_SHA" >> $GITHUB_ENV
+
+      - name: Display results
+        run: |
+          echo "Current branch: ${{ env.CURRENT_BRANCH }}"
+          echo "Default branch: ${{ env.DEFAULT_BRANCH }}"
+          echo "Base commit SHA: ${{ env.BASE_SHA }}"
+
       # - name: echo github
       #   run: git merge-base feature-parent-branch-test master
 
