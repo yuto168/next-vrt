@@ -107,7 +107,15 @@ jobs:
       - name: after ss
         run: docker compose run playwright bash -c "chmod +x /wait.sh && /wait.sh next:3000 && npm i && npm run ss-after"
 
-      # 存在チェック
+      # 存在チェック ss-after
+      - name: list playwright files
+        run: ls -la playwright/vrt/after
+
+      # beforeのスクリーンショットを取得＋reg-cliによる比較
+      - name: before ss
+        run: docker compose run playwright bash -c "chmod +x /wait.sh && /wait.sh next:3000 && npm i && npm run ss-before && npm run reg"
+
+      # 存在チェック ss-before
       - name: list playwright files
         run: ls -la playwright/vrt/after
 
@@ -116,7 +124,7 @@ jobs:
         with:
           name: screen-shot ${{ github.sha }} # gitshaでスクリーンショットを保存
           path: |
-            playwright/directory_contains_actual_images/
+            playwright/vrt/reports/report.html
           retention-days: 30
 
       # 前のジョブの成功失敗に関係なく実行
