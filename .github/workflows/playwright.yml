@@ -1,15 +1,12 @@
 name: VRT Tests
 on:
-  workflow_dispatch:
-    inputs:
-      base_branch:
-        description: "Base branch (e.g., main, master, develop)"
-        required: true
-        default: "master"
+  pull_request:
+    types: [labeled]
 
 jobs:
   # job id
   vrt-docker:
+    if: github.event.label.name == 'vrt'
     timeout-minutes: 60
     runs-on: ubuntu-20.04
     steps:
@@ -21,22 +18,10 @@ jobs:
           ref: ${{ github.ref }} # 現在のブランチを指定
           fetch-depth: 0 # フェッチするコミットの深さを指定
 
-      - name: Get current branch name
-        run: echo "CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_ENV
-
-      - name: Fetch base branch
-        run: git fetch origin ${{ github.event.inputs.base_branch }}
-
-      - name: Get common ancestor commit
-        run: |
-          ancestor_commit=$(git merge-base feature-parent-branch-test master)
-          echo "Common ancestor commit: $ancestor_commit"
-
       - name: Display results
         run: |
-          echo "Current branch: ${{ env.CURRENT_BRANCH }}"
-          echo "Default branch: ${{ env.DEFAULT_BRANCH }}"
-          echo "Base commit SHA: ${{ env.BASE_SHA }}"
+          echo "Current branch: ${{ github.ref }}"
+          echo "Default branch: ${{ github.base_ref }}"
       # - name: download expected images
       #   uses: actions/download-artifact@v2
       #   with:
