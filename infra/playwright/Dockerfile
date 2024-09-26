@@ -9,7 +9,7 @@ COPY ./playwright/package*.json .
 # 依存関係のインストール
 RUN npm ci
 
-COPY ./playwright .
+# COPY ./playwright .
 
 COPY ./playwright/wait.sh /wait.sh
 RUN chmod +x /wait.sh
