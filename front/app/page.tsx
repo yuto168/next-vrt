@@ -1,7 +1,7 @@
 export default function Home() {
   return (
     <main>
-      <h1>Hello huga</h1>
+      <h1>Hello child</h1>
     </main>
   );
 }
