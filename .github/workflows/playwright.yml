@@ -15,6 +15,14 @@ jobs:
         with:
           ref: ${{ github.ref }} # 現在のブランチを指定
 
+      - name: Get current branch name
+        run: echo "CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_ENV
+
+      - name: Get default branch name
+        run: |
+          DEFAULT_BRANCH=$(git remote show origin | grep 'HEAD branch' | cut -d' ' -f5)
+          echo "DEFAULT_BRANCH=${DEFAULT_BRANCH}" >> $GITHUB_ENV
+
       # - name: echo github
       #   run: git merge-base feature-parent-branch-test master
 
