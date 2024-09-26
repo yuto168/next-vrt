@@ -102,7 +102,7 @@ jobs:
         run: ls -la plauywright/vrt/after
 
       - name: after ss
-        run: docker compose exec playwright bash -c "npm run ss-after"
+        run: make ss-after
 
       # 存在チェック
       - name: list playwright files
