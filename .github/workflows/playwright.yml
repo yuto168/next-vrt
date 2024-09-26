@@ -99,7 +99,7 @@ jobs:
 
       # 存在チェック
       - name: list playwsright files
-        run: ls -la plauywright/vrt/after
+        run: ls -la plauywright/
 
       - name: after ss
         run: make ss-after
