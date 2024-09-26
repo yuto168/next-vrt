@@ -99,7 +99,7 @@ jobs:
 
       # masterブランチのfrontディレクトリをfrontディレクトリにコピーして、元のmaster-frontディレクトリを削除
       - name: copy master-front to front
-        run: rm -rf front && cp -r master-front/front front
+        run: chmod -R 777 front/app && chmod -R 777 && rm -rf front/app && cp -rf master-front/front/app front/app && rm -rf master-front
 
       - name: list front files after copy
         run: ls -la front
