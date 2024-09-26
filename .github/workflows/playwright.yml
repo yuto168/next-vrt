@@ -23,7 +23,8 @@ jobs:
           echo "Current branch: ${{ github.ref }}"
           echo "Current branch sha: ${{ github.sha }}"
           echo "Default branch: ${{ github.base_ref }}"
-          echo "Default branch sha: ${{ github.base_ref.sha }}"
+          echo "Default branch sha: ${{ github.event.pull_request.base.sha }}"
+
       # - name: download expected images
       #   uses: actions/download-artifact@v2
       #   with:
