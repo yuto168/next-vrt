@@ -95,7 +95,7 @@ jobs:
         run: docker compose build --progress=plain --build-arg BUILDKIT_INLINE_CACHE=1
 
       - name: Start Docker containers
-        run: docker compose up
+        run: docker compose up -d
 
       # 存在チェック
       - name: list playwsright files
