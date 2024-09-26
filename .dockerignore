@@ -1,0 +1,4 @@
+front/node_modules
+playwright/node_modules
+.next
+.env
