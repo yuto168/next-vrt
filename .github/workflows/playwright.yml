@@ -6,7 +6,7 @@ on:
 jobs:
   # job id
   vrt-docker:
-    # if: github.event.label.name == 'vrt'
+    if: contains(github.event.pull_request.labels.*.name, 'vrt')
     timeout-minutes: 60
     runs-on: ubuntu-20.04
     steps:
