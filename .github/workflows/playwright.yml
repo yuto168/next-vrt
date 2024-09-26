@@ -19,24 +19,24 @@ jobs:
         uses: actions/checkout@v4 # リポジトリをチェックアウト
         with:
           ref: ${{ github.ref }} # 現在のブランチを指定
+          fetch-depth: 0 # フェッチするコミットの深さを指定
 
       - name: Get current branch name
         run: echo "CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_ENV
 
-      - name: Display results
-        run: |
-          echo "Current branch: ${{ env.CURRENT_BRANCH }}"
-          echo "Default branch: ${{ env.DEFAULT_BRANCH }}"
-          echo "Base commit SHA: ${{ env.BASE_SHA }}"
-
-      # - name: echo github
-      #   run: git merge-base feature-parent-branch-test master
+      - name: Fetch base branch
+        run: git fetch origin ${{ github.event.inputs.base_branch }}
 
       - name: Get common ancestor commit
         run: |
           ancestor_commit=$(git merge-base feature-parent-branch-test master)
           echo "Common ancestor commit: $ancestor_commit"
 
+      - name: Display results
+        run: |
+          echo "Current branch: ${{ env.CURRENT_BRANCH }}"
+          echo "Default branch: ${{ env.DEFAULT_BRANCH }}"
+          echo "Base commit SHA: ${{ env.BASE_SHA }}"
       # - name: download expected images
       #   uses: actions/download-artifact@v2
       #   with:
