@@ -96,6 +96,17 @@ jobs:
       - name: Start Docker containers
         run: docker compose up --abort-on-container-exit
 
+      # 存在チェック
+      - name: list playwsright files
+        run: ls -la plauywright/vrt/after
+
+      - name: after ss
+        run: docker compose exec playwright bash -c "npm run ss-after"
+
+      # 存在チェック
+      - name: list playwright files
+        run: ls -la plauywright/vrt/after
+
       - uses: actions/upload-artifact@v4
         if: always()
         with:
