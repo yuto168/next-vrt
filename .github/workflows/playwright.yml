@@ -27,6 +27,7 @@ jobs:
 
       - name: download expected images
         uses: actions/download-artifact@v4
+        continue-on-error: true
         with:
           # 親ブランチのgitshaでスクリーンショットを取得
           name: screenshot ${{ github.event.pull_request.base.sha }}
