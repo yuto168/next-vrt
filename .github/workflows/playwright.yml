@@ -124,7 +124,7 @@ jobs:
         with:
           name: screen-shot ${{ github.sha }} # gitshaでスクリーンショットを保存
           path: |
-            playwright/vrt/reports/report.html
+            playwright/vrt
           retention-days: 30
 
       # 前のジョブの成功失敗に関係なく実行
