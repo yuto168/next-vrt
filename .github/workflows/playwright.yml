@@ -1,6 +1,11 @@
 name: VRT Tests
 on:
   workflow_dispatch:
+    inputs:
+      base_branch:
+        description: "Base branch (e.g., main, master, develop)"
+        required: true
+        default: "master"
 
 jobs:
   # job id
@@ -18,23 +23,15 @@ jobs:
       - name: Get current branch name
         run: echo "CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_ENV
 
-      - name: Get default branch name
+      - name: Get base branch SHA
         run: |
-          DEFAULT_BRANCH=$(git remote show origin | grep 'HEAD branch' | cut -d' ' -f5)
-          echo "DEFAULT_BRANCH=${DEFAULT_BRANCH}" >> $GITHUB_ENV
-
-      - name: Get base commit SHA
-        run: |
-          BASE_BRANCH="${{ env.DEFAULT_BRANCH }}"
-          if [ "${{ env.CURRENT_BRANCH }}" = "$BASE_BRANCH" ]; then
-            # 現在のブランチがデフォルトブランチの場合、1つ前のコミットを使用
-            BASE_SHA=$(git rev-parse HEAD~1)
-          else
-            # それ以外の場合、merge-baseを使用
-            BASE_SHA=$(git merge-base ${{ env.CURRENT_BRANCH }} $BASE_BRANCH)
-          fi
-          echo "Base commit SHA: $BASE_SHA"
+          BASE_SHA=$(git rev-parse origin/${{ github.event.inputs.base_branch }})
           echo "BASE_SHA=$BASE_SHA" >> $GITHUB_ENV
+
+      - name: Get current branch SHA
+        run: |
+          CURRENT_SHA=$(git rev-parse HEAD)
+          echo "CURRENT_SHA=$CURRENT_SHA" >> $GITHUB_ENV
 
       - name: Display results
         run: |
