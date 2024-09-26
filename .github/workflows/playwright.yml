@@ -15,12 +15,14 @@ jobs:
         with:
           ref: ${{ github.ref }} # 現在のブランチを指定
 
-      - name: Get base branch SHA
-        id: get_sha
-        run: echo "::set-output name=sha::$(git show-branch | grep '*' | grep -v \"$(git rev-parse --abbrev-ref HEAD)\" | head -1 | awk -F'[]~^[]' '{print $2}')"
+      - name: echo github
+        run: git merge-base feature-parent-branch-test master
 
-      - name: echo base branch
-        run: echo ${{ steps.get_sha.outputs.sha }}
+      - name: Get common ancestor commit
+        run: |
+          ancestor_commit=$(git merge-base feature-parent-branch-test master)
+          echo "Common ancestor commit: $ancestor_commit"
+
       # - name: download expected images
       #   uses: actions/download-artifact@v2
       #   with:
