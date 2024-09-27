@@ -50,17 +50,14 @@ jobs:
           cache-from: type=gha,scope=playwright
           cache-to: type=gha,mode=max,scope=playwright
 
-      # - name: Build Docker containers
-      #   run: docker compose build --progress=plain --build-arg BUILDKIT_INLINE_CACHE=1
-
-      - name: Start Docker containers
-        run: docker compose up -d
+      - name: Start next containers
+        run: docker compose up next -d
 
       - name: Check if frontend container is running
         run: docker compose ps next
 
       - name: after ss
-        run: docker compose run playwright bash -c "chmod +x /wait.sh && /wait.sh next:3000 && npm i && npm run ss-after"
+        run: docker compose run playwright bash -c "ls -la && chmod +x /wait.sh && /wait.sh next:3000 && npm i && npm run ss-after"
 
         # baseブランチのfrontコードを取得
       - name: checkout master branch
