@@ -11,7 +11,8 @@ services:
     environment:
       # hot reloadを有効にするためらしい
       - WATCHPACK_POLLING=true
-    command: sh -c "npm install && npm run dev"
+      # ここのホスト側のパッケージ追加などをコンテナ内のnode_modulesに反映させるため。なので開発時には必要  ci時には不要
+    command: sh -c "npm install && npm run dev" 
     networks:
       - common
     ports:

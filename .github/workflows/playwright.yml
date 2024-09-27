@@ -25,16 +25,16 @@ jobs:
           # 親ブランチのgitshaでスクリーンショットを取得
           name: screenshot ${{ github.event.pull_request.base.sha }}
 
-      # node_modulesをキャッシュ
-      - name: cache node_modules
-        uses: actions/cache@v3
-        id: cache-node-modules
-        with:
-          path: "**/node_modules"
-          # hashFilesでpackage-lock.jsonの変更を検知
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-
+      # # node_modulesをキャッシュ
+      # - name: cache node_modules
+      #   uses: actions/cache@v3
+      #   id: cache-node-modules
+      #   with:
+      #     path: "**/node_modules"
+      #     # hashFilesでpackage-lock.jsonの変更を検知
+      #     key: ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-
 
       - uses: docker/setup-buildx-action@v2
 
@@ -69,16 +69,8 @@ jobs:
       - name: Check if frontend container is running
         run: docker compose ps next
 
-      # 存在チェック
-      - name: list playwsright files
-        run: ls -la playwright/
-
       - name: after ss
         run: docker compose run playwright bash -c "chmod +x /wait.sh && /wait.sh next:3000 && npm i && npm run ss-after"
-
-      # 存在チェック ss-after
-      - name: list playwright files
-        run: ls -la playwright/vrt/after
 
         # baseブランチのfrontコードを取得
       - name: checkout master branch
@@ -100,7 +92,7 @@ jobs:
 
       # masterブランチのfrontディレクトリをfrontディレクトリにコピーして、元のmaster-frontディレクトリを削除
       - name: copy master-front to front
-        run: chmod -R 777 front/app && chmod -R 777 master-front/front/app && rm -rf front/app && cp -rf master-front/front/app front/app && rm -rf master-front
+        run: sudo rm -rf front/app && sudo cp -rf master-front/front/app front/app && sudo rm -rf master-front
 
       - name: list front files after copy
         run: ls -la front
