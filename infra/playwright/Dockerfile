@@ -14,4 +14,4 @@ RUN npm ci
 # RUN chmod +x /wait.sh
 
 # RUNでやった権限付与がなぜリセットされるのか
-CMD ["bash", "-c", "chmod +x /wait.sh && /wait.sh next:3000"]
+CMD ["bash", "-c", "chmod +x wait.sh && wait.sh next:3000"]
