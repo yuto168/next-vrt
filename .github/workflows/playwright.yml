@@ -58,6 +58,9 @@ jobs:
       - name: after ss
         run: docker compose run playwright bash -c "ls -la && chmod +x ./wait.sh && ./wait.sh next:3000 && npm i && npm run ss-after"
 
+      - name: echo base ref
+        run: echo ${{github.base_ref}}
+
         # baseブランチのfrontコードを取得
       - name: checkout base branch
         uses: actions/checkout@v4 # リポジトリをチェックアウト
@@ -89,7 +92,7 @@ jobs:
 
       # beforeのスクリーンショットを取得＋reg-cliによる比較
       - name: before ss
-        run: docker compose run playwright bash -c "chmod +x /wait.sh && /wait.sh next:3000 && npm i && npm run ss-before && npm run reg"
+        run: docker compose run playwright bash -c "ls -la && chmod +x /wait.sh && /wait.sh next:3000 && npm i && npm run ss-before && npm run reg"
 
       # 存在チェック ss-before
       - name: list playwright files
