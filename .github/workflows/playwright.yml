@@ -41,7 +41,8 @@ jobs:
       - name: Cache front Docker layers
         uses: docker/build-push-action@v4
         with:
-          load: true
+          # 同一ステップであれば問題ないということか？
+          # load: true
           push: false
           context: .
           file: ./infra/next/Dockerfile
@@ -52,7 +53,7 @@ jobs:
       - name: Cache playwright Docker layers
         uses: docker/build-push-action@v4
         with:
-          load: true
+          # load: true
           push: false
           context: .
           file: ./infra/playwright/Dockerfile
