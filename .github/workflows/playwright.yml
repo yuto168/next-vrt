@@ -25,17 +25,6 @@ jobs:
           # 親ブランチのgitshaでスクリーンショットを取得
           name: screenshot ${{ github.event.pull_request.base.sha }}
 
-      # # node_modulesをキャッシュ
-      # - name: cache node_modules
-      #   uses: actions/cache@v3
-      #   id: cache-node-modules
-      #   with:
-      #     path: "**/node_modules"
-      #     # hashFilesでpackage-lock.jsonの変更を検知
-      #     key: ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-
-
       - uses: docker/setup-buildx-action@v2
 
       - name: Cache front Docker layers
@@ -61,8 +50,8 @@ jobs:
           cache-from: type=gha,scope=playwright
           cache-to: type=gha,mode=max,scope=playwright
 
-      - name: Build Docker containers
-        run: docker compose build --progress=plain --build-arg BUILDKIT_INLINE_CACHE=1
+      # - name: Build Docker containers
+      #   run: docker compose build --progress=plain --build-arg BUILDKIT_INLINE_CACHE=1
 
       - name: Start Docker containers
         run: docker compose up -d
