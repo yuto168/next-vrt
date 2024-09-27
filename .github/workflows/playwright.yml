@@ -43,7 +43,7 @@ jobs:
         with:
           # 同一ステップであれば問題ないということか？
           # load: true
-          push: false
+          push: true
           context: .
           file: ./infra/next/Dockerfile
           tags: my-app-react-reg-suit-next
