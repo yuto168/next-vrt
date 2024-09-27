@@ -56,7 +56,7 @@ jobs:
         run: docker compose ps next
 
       - name: after ss
-        run: docker compose run playwright bash -c "ls -la && chmod +x wait.sh && wait.sh next:3000 && npm i && npm run ss-after"
+        run: docker compose run playwright bash -c "ls -la && chmod +x ./wait.sh && ./wait.sh next:3000 && npm i && npm run ss-after"
 
         # baseブランチのfrontコードを取得
       - name: checkout master branch
