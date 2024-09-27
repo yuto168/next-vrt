@@ -59,26 +59,26 @@ jobs:
         run: docker compose run playwright bash -c "ls -la && chmod +x ./wait.sh && ./wait.sh next:3000 && npm i && npm run ss-after"
 
         # baseブランチのfrontコードを取得
-      - name: checkout master branch
+      - name: checkout base branch
         uses: actions/checkout@v4 # リポジトリをチェックアウト
         with:
-          ref: master # masterブランチを指定
+          ref: ${{github.base_ref}} # ベースブランチを指定
           # frontディレクトリだけをチェックアウト
           sparse-checkout: |
             front
           sparse-checkout-cone-mode: false
-          path: master-front
+          path: base-front
 
       - name: list front files
         run: ls -la front
 
-        # master-frontディレクトリのfrontディレクトリを表示
-      - name: list master-front files
-        run: ls -la master-front/front
+        # base-frontディレクトリのfrontディレクトリを表示
+      - name: list base-front files
+        run: ls -la base-front/front
 
-      # masterブランチのfrontディレクトリをfrontディレクトリにコピーして、元のmaster-frontディレクトリを削除
-      - name: copy master-front to front
-        run: sudo rm -rf front/app && sudo cp -rf master-front/front/app front/app && sudo rm -rf master-front
+      # baseブランチのfrontディレクトリをfrontディレクトリにコピーして、元のbase-frontディレクトリを削除
+      - name: copy base-front to front
+        run: sudo rm -rf front/app && sudo cp -rf base-front/front/app front/app && sudo rm -rf base-front
 
       - name: list front files after copy
         run: ls -la front
