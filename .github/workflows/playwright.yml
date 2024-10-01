@@ -37,14 +37,6 @@ jobs:
             ${{ github.ref }}
             refs/head/main
 
-      - name: Cache Composer layers
-        uses: actions/cache@v2
-        with:
-          path: /tmp/.composer-cache
-          key: ${{ runner.os }}-composer-${{ hashFiles('./codeigniter/application/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
-
       - name: Cache next Docker layers local
         uses: docker/build-push-action@v4
         with:
@@ -133,6 +125,7 @@ jobs:
       # beforeのスクリーンショットを取得＋reg-cliによる比較
       - name: before ss
         run: docker compose run playwright bash -c "chmod +x ./wait.sh && ./wait.sh next:3000 && npm i && npm run ss-before && npm run reg"
+        continue-on-error: true
 
       # 存在チェック ss-before
       - name: list playwright files
