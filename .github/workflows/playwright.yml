@@ -160,8 +160,8 @@ jobs:
         run: |
           rm -rf /tmp/.buildx-cache-next
           rm -rf /tmp/.buildx-cache-playwright
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache-next
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache-playwright
+          mv /tmp/.buildx-cache-new-next /tmp/.buildx-cache-next
+          mv /tmp/.buildx-cache-new-playwright /tmp/.buildx-cache-playwright
 
       # 前のジョブの成功失敗に関係なく実行
       - name: Cleanup Docker environment
