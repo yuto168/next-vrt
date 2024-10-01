@@ -25,7 +25,9 @@ jobs:
           # 親ブランチのgitshaでスクリーンショットを取得
           name: screenshot ${{ github.event.pull_request.base.sha }}
 
-      - uses: docker/setup-buildx-action@v2
+      - name: setup Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2
 
         # ポイント 2 キャッシュを利用する
       - name: Cache Docker layers
@@ -43,6 +45,7 @@ jobs:
           load: true
           push: false
           context: .
+          builder: ${{ steps.buildx.outputs.name }}
           file: ./infra/next/Dockerfile
           tags: my-app-react-reg-suit-next
           cache-from: type=local,src=/tmp/.buildx-cache-next
@@ -54,6 +57,7 @@ jobs:
           load: true
           push: false
           context: .
+          builder: ${{ steps.buildx.outputs.name }}
           file: ./infra/playwright/Dockerfile
           tags: my-app-react-reg-suit-playwright
           cache-from: type=local,src=/tmp/.buildx-cache-playwright
