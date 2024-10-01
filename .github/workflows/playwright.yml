@@ -30,11 +30,13 @@ jobs:
         uses: docker/setup-buildx-action@v2
 
         # ポイント 2 キャッシュを利用する
-      - name: Cache next Docker layers local
+      - name: Cache next Docker layers
         uses: actions/cache@v2
         with:
           path: /tmp/.buildx-cache-next
-          key: ${{ github.ref }}-${{ github.sha }}
+          # キャッシュキー
+          key: ${{ github.ref }}-${{ github.sha }}-next
+          # keyがヒットしなかった場合に利用するキャッシュキー
           restore-keys: |
             ${{ github.ref }}
             refs/head/main
@@ -44,7 +46,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: /tmp/.buildx-cache-playwright
-          key: ${{ github.ref }}-${{ github.sha }}
+          key: ${{ github.ref }}-${{ github.sha }}-playwright
           restore-keys: |
             ${{ github.ref }}
             refs/head/main
