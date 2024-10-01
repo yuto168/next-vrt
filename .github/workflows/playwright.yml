@@ -36,7 +36,7 @@ jobs:
           file: ./infra/next/Dockerfile
           tags: my-app-react-reg-suit-next
           cache-from: type=gha,scope=front
-          cache-to: type=gha,mode=max,scope=front
+          cache-to: type=gha,mode=min,scope=front
 
       - name: Cache playwright Docker layers
         uses: docker/build-push-action@v4
@@ -47,7 +47,7 @@ jobs:
           file: ./infra/playwright/Dockerfile
           tags: my-app-react-reg-suit-playwright
           cache-from: type=gha,scope=playwright
-          cache-to: type=gha,mode=max,scope=playwright
+          cache-to: type=gha,mode=min,scope=playwright
 
       - name: Start next containers
         run: docker compose up next -d
