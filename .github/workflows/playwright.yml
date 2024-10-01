@@ -39,7 +39,7 @@ jobs:
           # keyがヒットしなかった場合に利用するキャッシュキー
           restore-keys: |
             ${{ github.ref }}
-            refs/head/main
+            refs/head/master
 
         # ポイント 2 キャッシュを利用する
       - name: Cache playwright Docker layers
@@ -49,7 +49,7 @@ jobs:
           key: ${{ github.ref }}-${{ github.sha }}-playwright
           restore-keys: |
             ${{ github.ref }}
-            refs/head/main
+            refs/head/master
 
       - name: Cache next Docker layers local
         uses: docker/build-push-action@v4
