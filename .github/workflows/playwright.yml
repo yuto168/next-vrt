@@ -155,7 +155,7 @@ jobs:
 
       - name: Fix permissions of vrt reports
         run: |
-          chmod -c -R +rX "playwright/vrt/" | while read line; do
+          sudo chmod -c -R +rX "playwright/vrt/" | while read line; do
             echo "::warning title=Invalid file permissions automatically fixed::$line"
           done
 
@@ -165,7 +165,7 @@ jobs:
         with:
           name: screen-shot ${{ github.sha }} # gitshaでスクリーンショットを保存
           path: |
-            playwright/vrt
+            playwright/vrt/
           retention-days: 30
 
       # - uses: actions/upload-artifact@v4
