@@ -148,7 +148,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: screenshot ${{ github.event.pull_request.base.sha }} # gitshaでスクリーンショットを保存
+          name: screen-shot-for-base ${{ github.event.pull_request.base.sha }} # gitshaでスクリーンショットを保存
           path: |
             playwright/vrt/before
           retention-days: 30
