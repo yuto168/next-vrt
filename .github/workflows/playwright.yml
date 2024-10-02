@@ -109,11 +109,12 @@ jobs:
         with:
           name: screen-shot-for-base ${{ github.event.pull_request.base.sha }}
 
-      - name: echo base ref
-        if: steps.download-base-ss.outcome == 'failure'
-        run: echo ${{github.base_ref}}
+        # baseブランチの名前
+      # - name: echo base ref
+      #   if: steps.download-base-ss.outcome == 'failure'
+      #   run: echo ${{github.base_ref}}
 
-        # baseブランチのfrontコードを取得
+      # baseブランチのfrontコードを取得
       - name: checkout base branch
         uses: actions/checkout@v4 # リポジトリをチェックアウト
         with:
@@ -122,23 +123,22 @@ jobs:
           sparse-checkout: |
             front
           sparse-checkout-cone-mode: false
-          path: base-front
+          path: front
 
-      - name: list front files
+      - name: ls-front after checkout
         run: ls -la front
 
-        # base-frontディレクトリのfrontディレクトリを表示
-      - name: list base-front files
-        run: ls -la base-front/front
-
+      # # baseブランチのfrontディレクトリをfrontディレクトリにコピーして、元のbase-frontディレクトリを削除
+      # - name: copy base-front to front
+      #   run: sudo rm -rf front/app && sudo cp -rf base-front/front/app front/app && sudo rm -rf base-front
       # baseブランチのfrontディレクトリをfrontディレクトリにコピーして、元のbase-frontディレクトリを削除
-      - name: copy base-front to front
-        run: sudo rm -rf front/app && sudo cp -rf base-front/front/app front/app && sudo rm -rf base-front
+      # - name: Copy base-front to front
+      #   run: |
+      #     sudo rm -rf front/app
+      #     sudo mv base-front/front/app front/app
+      #     sudo rm -rf base-front
 
-      - name: list front files after copy
-        run: ls -la front
-
-        # frontコンテナの再起動
+      # frontコンテナの再起動
       - name: frontコンテナの再起動
         run: docker compose restart next
 
