@@ -163,13 +163,12 @@ jobs:
         run: ls -la playwright
 
       - name: upload vrt reports to page artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v3.0.1
         if: always()
         with:
           name: screen-shot ${{ github.sha }} # gitshaでスクリーンショットを保存
-          path: |
-            playwright/vrt
           retention-days: 30
+          path: playwright/vrt
 
       # - uses: actions/upload-artifact@v4
       #   if: always()
