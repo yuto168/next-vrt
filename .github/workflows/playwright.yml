@@ -157,7 +157,10 @@ jobs:
         run: |
           sudo chmod -c -R +rX "playwright/vrt/" | while read line; do
             echo "::warning title=Invalid file permissions automatically fixed::$line"
-          done
+          don
+
+      - name: List contents of playwright/vrt
+        run: ls -la playwright
 
       - name: upload vrt reports to page artifact
         uses: actions/upload-pages-artifact@v1
