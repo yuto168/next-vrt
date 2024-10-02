@@ -157,7 +157,7 @@ jobs:
         run: |
           sudo chmod -c -R +rX "playwright/vrt/" | while read line; do
             echo "::warning title=Invalid file permissions automatically fixed::$line"
-          don
+          done
 
       - name: List contents of playwright/vrt
         run: ls -la playwright
