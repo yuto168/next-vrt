@@ -99,7 +99,7 @@ jobs:
         run: docker compose ps next
 
       - name: after ss
-        run: docker compose run --no-recreate playwright bash -c "chmod +x ./wait.sh && ./wait.sh next:3000 && npm run ss-after"
+        run: docker compose run --no-build playwright bash -c "chmod +x ./wait.sh && ./wait.sh next:3000 && npm run ss-after"
 
       - name: echo base ref
         run: echo ${{github.base_ref}}
