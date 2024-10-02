@@ -114,6 +114,10 @@ jobs:
       #   if: steps.download-base-ss.outcome == 'failure'
       #   run: echo ${{github.base_ref}}
 
+      # frontディレクトリのpermissionを変更。全権限追加
+      - name: frontコンテナの再起動
+        run: ls -la front && sudo chmod -R 777 front
+
       # baseブランチのfrontコードを取得
       - name: checkout base branch
         uses: actions/checkout@v4 # リポジトリをチェックアウト
@@ -126,7 +130,7 @@ jobs:
           path: front
 
       - name: ls-front after checkout
-        run: ls -la front
+        run: ls -la && ls -la front
 
       # # baseブランチのfrontディレクトリをfrontディレクトリにコピーして、元のbase-frontディレクトリを削除
       # - name: copy base-front to front
