@@ -29,73 +29,73 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v2
 
-        # ポイント 2 キャッシュを利用する
-      - name: Cache next Docker layers
-        uses: actions/cache@v2
-        with:
-          path: /tmp/.buildx-cache-next
-          # キャッシュキー
-          key: ${{ github.ref }}-${{ github.sha }}-next
-          # keyがヒットしなかった場合に利用するキャッシュキー
-          restore-keys: |
-            ${{ github.ref }}
-            refs/head/master
+      #   # ポイント 2 キャッシュを利用する
+      # - name: Cache next Docker layers
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: /tmp/.buildx-cache-next
+      #     # キャッシュキー
+      #     key: ${{ github.ref }}-${{ github.sha }}-next
+      #     # keyがヒットしなかった場合に利用するキャッシュキー
+      #     restore-keys: |
+      #       ${{ github.ref }}
+      #       refs/head/master
 
-        # ポイント 2 キャッシュを利用する
-      - name: Cache playwright Docker layers
-        uses: actions/cache@v2
-        with:
-          path: /tmp/.buildx-cache-playwright
-          key: ${{ github.ref }}-${{ github.sha }}-playwright
-          restore-keys: |
-            ${{ github.ref }}
-            refs/head/master
+      #   # ポイント 2 キャッシュを利用する
+      # - name: Cache playwright Docker layers
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: /tmp/.buildx-cache-playwright
+      #     key: ${{ github.ref }}-${{ github.sha }}-playwright
+      #     restore-keys: |
+      #       ${{ github.ref }}
+      #       refs/head/master
 
-      - name: Cache next Docker layers local
-        uses: docker/build-push-action@v4
-        with:
-          load: true
-          push: false
-          context: .
-          builder: ${{ steps.buildx.outputs.name }}
-          file: ./infra/next/Dockerfile
-          tags: my-app-react-reg-suit-next
-          cache-from: type=local,src=/tmp/.buildx-cache-next
-          cache-to: type=local,dest=/tmp/.buildx-cache-new-next,mode=max
-
-      - name: Cache playwright Docker layers local
-        uses: docker/build-push-action@v4
-        with:
-          load: true
-          push: false
-          context: .
-          builder: ${{ steps.buildx.outputs.name }}
-          file: ./infra/playwright/Dockerfile
-          tags: my-app-react-reg-suit-playwright
-          cache-from: type=local,src=/tmp/.buildx-cache-playwright
-          cache-to: type=local,dest=/tmp/.buildx-cache-new-playwright,mode=max
-
-      # - name: Cache front Docker layers
+      # - name: Cache next Docker layers local
       #   uses: docker/build-push-action@v4
       #   with:
       #     load: true
       #     push: false
       #     context: .
+      #     builder: ${{ steps.buildx.outputs.name }}
       #     file: ./infra/next/Dockerfile
       #     tags: my-app-react-reg-suit-next
-      #     cache-from: type=gha,scope=front
-      #     cache-to: type=gha,mode=min,scope=front
+      #     cache-from: type=local,src=/tmp/.buildx-cache-next
+      #     cache-to: type=local,dest=/tmp/.buildx-cache-new-next,mode=max
 
-      # - name: Cache playwright Docker layers
+      # - name: Cache playwright Docker layers local
       #   uses: docker/build-push-action@v4
       #   with:
       #     load: true
       #     push: false
       #     context: .
+      #     builder: ${{ steps.buildx.outputs.name }}
       #     file: ./infra/playwright/Dockerfile
       #     tags: my-app-react-reg-suit-playwright
-      #     cache-from: type=gha,scope=playwright
-      #     cache-to: type=gha,mode=min,scope=playwright
+      #     cache-from: type=local,src=/tmp/.buildx-cache-playwright
+      #     cache-to: type=local,dest=/tmp/.buildx-cache-new-playwright,mode=max
+
+      - name: Cache front Docker layers
+        uses: docker/build-push-action@v4
+        with:
+          load: true
+          push: false
+          context: .
+          file: ./infra/next/Dockerfile
+          tags: my-app-react-reg-suit-next
+          cache-from: type=gha,scope=front
+          cache-to: type=gha,mode=min,scope=front
+
+      - name: Cache playwright Docker layers
+        uses: docker/build-push-action@v4
+        with:
+          load: true
+          push: false
+          context: .
+          file: ./infra/playwright/Dockerfile
+          tags: my-app-react-reg-suit-playwright
+          cache-from: type=gha,scope=playwright
+          cache-to: type=gha,mode=min,scope=playwright
 
       - name: Start next containers
         run: docker compose up next -d
@@ -155,15 +155,15 @@ jobs:
             playwright/vrt
           retention-days: 30
 
-        # Temp fix
-        # https://github.com/docker/build-push-action/issues/252
-        # https://github.com/moby/buildkit/issues/1896
-      - name: Move cache
-        run: |
-          rm -rf /tmp/.buildx-cache-next
-          rm -rf /tmp/.buildx-cache-playwright
-          mv /tmp/.buildx-cache-new-next /tmp/.buildx-cache-next
-          mv /tmp/.buildx-cache-new-playwright /tmp/.buildx-cache-playwright
+      #   # Temp fix
+      #   # https://github.com/docker/build-push-action/issues/252
+      #   # https://github.com/moby/buildkit/issues/1896
+      # - name: Move cache
+      #   run: |
+      #     rm -rf /tmp/.buildx-cache-next
+      #     rm -rf /tmp/.buildx-cache-playwright
+      #     mv /tmp/.buildx-cache-new-next /tmp/.buildx-cache-next
+      #     mv /tmp/.buildx-cache-new-playwright /tmp/.buildx-cache-playwright
 
       # 前のジョブの成功失敗に関係なく実行
       - name: Cleanup Docker environment
