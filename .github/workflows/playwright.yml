@@ -1,7 +1,7 @@
 name: VRT Tests
 on:
   pull_request:
-    types: [labeled]
+    types: [labeled, synchronize]
 
 jobs:
   # job id
