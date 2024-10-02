@@ -153,13 +153,28 @@ jobs:
             playwright/vrt/before
           retention-days: 30
 
-      - uses: actions/upload-artifact@v4
+      - name: Fix permissions of vrt reports
+        run: |
+          chmod -c -R +rX "playwright/vrt/" | while read line; do
+            echo "::warning title=Invalid file permissions automatically fixed::$line"
+          done
+
+      - name: upload vrt reports to page artifact
+        uses: actions/upload-pages-artifact@v3
         if: always()
         with:
           name: screen-shot ${{ github.sha }} # gitshaでスクリーンショットを保存
           path: |
             playwright/vrt
           retention-days: 30
+
+      # - uses: actions/upload-artifact@v4
+      #   if: always()
+      #   with:
+      #     name: screen-shot ${{ github.sha }} # gitshaでスクリーンショットを保存
+      #     path: |
+      #       playwright/vrt
+      #     retention-days: 30
 
       #   # Temp fix
       #   # https://github.com/docker/build-push-action/issues/252
