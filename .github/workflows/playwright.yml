@@ -160,7 +160,7 @@ jobs:
           done
 
       - name: upload vrt reports to page artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v1
         if: always()
         with:
           name: screen-shot ${{ github.sha }} # gitshaでスクリーンショットを保存
