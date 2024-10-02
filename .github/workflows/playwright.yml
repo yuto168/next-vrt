@@ -75,6 +75,7 @@ jobs:
       #     cache-from: type=local,src=/tmp/.buildx-cache-playwright
       #     cache-to: type=local,dest=/tmp/.buildx-cache-new-playwright,mode=max
 
+      # イメージのキャッシュは必要に応じて利用する。暫定でビルドキャッシュのみ利用
       - name: Cache front Docker layers
         uses: docker/build-push-action@v4
         with:
@@ -82,10 +83,11 @@ jobs:
           push: false
           context: .
           file: ./infra/next/Dockerfile
-          tags: my-app-react-reg-suit-next
-          cache-from: type=gha,scope=front
-          cache-to: type=gha,mode=min,scope=front
+          # tags: my-app-react-reg-suit-next
+          cache-from: type=gha,scope=next
+          cache-to: type=gha,mode=max,scope=next
 
+      # イメージのキャッシュは必要に応じて利用する。暫定でビルドキャッシュのみ利用
       - name: Cache playwright Docker layers
         uses: docker/build-push-action@v4
         with:
@@ -93,9 +95,9 @@ jobs:
           push: false
           context: .
           file: ./infra/playwright/Dockerfile
-          tags: my-app-react-reg-suit-playwright
+          # tags: my-app-react-reg-suit-playwright
           cache-from: type=gha,scope=playwright
-          cache-to: type=gha,mode=min,scope=playwright
+          cache-to: type=gha,mode=max,scope=playwright
 
       - name: Start next containers
         run: docker compose up next -d
