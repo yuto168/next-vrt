@@ -114,10 +114,6 @@ jobs:
       #   if: steps.download-base-ss.outcome == 'failure'
       #   run: echo ${{github.base_ref}}
 
-      # frontディレクトリのpermissionを変更。全権限追加
-      - name: frontコンテナの再起動
-        run: ls -la front && sudo chmod -R 777 front
-
       # baseブランチのfrontコードを取得
       - name: checkout base branch
         uses: actions/checkout@v4 # リポジトリをチェックアウト
@@ -127,22 +123,25 @@ jobs:
           sparse-checkout: |
             front
           sparse-checkout-cone-mode: false
-          path: front
+          path: base-front
 
       - name: ls-front after checkout
-        run: ls -la && ls -la front
+        run: ls -la base-front/front
 
       # # baseブランチのfrontディレクトリをfrontディレクトリにコピーして、元のbase-frontディレクトリを削除
       # - name: copy base-front to front
       #   run: sudo rm -rf front/app && sudo cp -rf base-front/front/app front/app && sudo rm -rf base-front
       # baseブランチのfrontディレクトリをfrontディレクトリにコピーして、元のbase-frontディレクトリを削除
-      # - name: Copy base-front to front
-      #   run: |
-      #     sudo rm -rf front/app
-      #     sudo mv base-front/front/app front/app
-      #     sudo rm -rf base-front
+      - name: Copy base-front to front
+        run: |
+          sudo rm -rf front
+          sudo mv base-front/front front
+          sudo rm -rf base-front
 
-      # frontコンテナの再起動
+      - name: ls-front after copy
+        run: ls -la front
+
+        # frontコンテナの再起動
       - name: frontコンテナの再起動
         run: docker compose restart next
 
