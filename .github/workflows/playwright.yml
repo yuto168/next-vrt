@@ -102,7 +102,7 @@ jobs:
         run: docker compose run playwright bash -c "chmod +x ./wait.sh && ./wait.sh next:3000 && npm run ss-after"
 
       # 親ブランチのgitshaでスクリーンショットを取得
-      - name: download expected images
+      - name: download base ss
         id: download-base-ss
         uses: actions/download-artifact@v4
         continue-on-error: true
@@ -110,6 +110,7 @@ jobs:
           name: screen-shot-for-base ${{ github.event.pull_request.base.sha }}
 
       - name: echo base ref
+        if: steps.download-base-ss.outcome == 'failure'
         run: echo ${{github.base_ref}}
 
         # baseブランチのfrontコードを取得
