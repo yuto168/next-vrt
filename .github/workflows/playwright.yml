@@ -95,6 +95,9 @@ jobs:
       - name: Start Next Containers
         run: docker compose up next -d
 
+      - name: who am i
+        run: whoami
+
       - name: Take Screenshot Of The Current State
         run: docker compose run playwright bash -c "chmod +x ./wait.sh && ./wait.sh next:3000 && npm run ss-after"
 
