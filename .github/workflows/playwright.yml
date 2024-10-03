@@ -14,8 +14,6 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-20.04
     steps:
-      - run: echo "Running Playwright Tests"
-
       - name: Checkout Current Branch
         uses: actions/checkout@v4 # リポジトリをチェックアウト
         with:
@@ -24,7 +22,7 @@ jobs:
 
       - name: Setup Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
 
       # イメージのキャッシュは必要に応じて利用する。暫定でビルドキャッシュのみ利用
       - name: Cache Front Docker Layers
@@ -34,7 +32,6 @@ jobs:
           push: false
           context: .
           file: ./infra/next/Dockerfile
-          # tags: my-app-react-reg-suit-next
           cache-from: type=gha,scope=next
           cache-to: type=gha,mode=max,scope=next
 
@@ -46,7 +43,6 @@ jobs:
           push: false
           context: .
           file: ./infra/playwright/Dockerfile
-          # tags: my-app-react-reg-suit-playwright
           cache-from: type=gha,scope=playwright
           cache-to: type=gha,mode=max,scope=playwright
 
