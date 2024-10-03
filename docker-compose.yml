@@ -1,6 +1,5 @@
 services:
   next:
-    # image: my-app-react-reg-suit-next
     build:
       dockerfile: ./infra/next/Dockerfile
     tty: true
@@ -21,7 +20,6 @@ services:
     container_name: next
 
   playwright:
-    # image: my-app-react-reg-suit-playwright
     build:
       dockerfile: ./infra/playwright/Dockerfile
     tty: true
