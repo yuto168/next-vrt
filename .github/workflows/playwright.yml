@@ -151,7 +151,7 @@ jobs:
             // コメントの投稿
             await github.rest.issues.createComment(params);
 
-      # 前のジョブの成功失敗に関係なく実行
+      # コンテナ停止
       - name: Cleanup Docker Environment
         if: always()
         run: docker compose down --rmi all --volumes --remove-orphans
