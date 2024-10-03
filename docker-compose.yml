@@ -1,16 +1,17 @@
 services:
   next:
-    image: my-app-react-reg-suit-next
     build:
       dockerfile: ./infra/next/Dockerfile
     tty: true
     working_dir: /app
     volumes:
       - ./front:/app
+      - next-node-modules:/app/node_modules
     environment:
       # hot reloadを有効にするためらしい
       - WATCHPACK_POLLING=true
-    command: sh -c "npm install && npm run dev"
+      # ここのホスト側のパッケージ追加などをコンテナ内のnode_modulesに反映させるため。なので開発時には必要  ci時には不要
+    command: sh -c "npm install && npm run dev" 
     networks:
       - common
     ports:
@@ -19,13 +20,13 @@ services:
     container_name: next
 
   playwright:
-    image: my-app-react-reg-suit-playwright
     build:
       dockerfile: ./infra/playwright/Dockerfile
     tty: true
     ipc: host # メモリ不足エラー対策
     volumes:
       - ./playwright:/playwright
+      - playwright-node-modules:/playwright/node_modules
       - /tmp/.X11-unix:/tmp/.X11-unix
     working_dir: /playwright
     environment:
@@ -40,3 +41,7 @@ services:
 networks:
   common:
     driver: bridge # ネットワークモードをbridgeに設定
+
+volumes:
+  next-node-modules:
+  playwright-node-modules:

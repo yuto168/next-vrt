@@ -5,5 +5,5 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('スクショを撮る', async ({ page }) => {
-  await page.screenshot({ path: './directory_contains_actual_images/example.png', fullPage: true });
+  await page.screenshot({ path: './vrt/after/example.png', fullPage: true });
 });

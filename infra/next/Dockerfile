@@ -2,10 +2,6 @@ FROM node:18.17.1
 
 WORKDIR /app
 
-COPY ./front/package*.json .
+# package.jsonをコピーしてnpm installを実行することでimage側とhost側のnode_modulesを同期させる
+COPY ./front/package*.json .  
 RUN npm ci
-
-# volumeしているのでcopyは不要かも
-# COPY ./front/ .
-
-CMD ["npm i && npm run dev"]
