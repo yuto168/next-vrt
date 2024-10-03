@@ -8,17 +8,16 @@ permissions:
   pull-requests: write
 
 jobs:
-  # job id
   vrt-docker:
     if: contains(github.event.pull_request.labels.*.name, 'vrt')
     timeout-minutes: 60
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout Current Branch
-        uses: actions/checkout@v4 # リポジトリをチェックアウト
+        uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref }} # 現在のブランチを指定
-          fetch-depth: 0 # フェッチするコミットの深さを指定
+          ref: ${{ github.ref }}
+          fetch-depth: 1 # 最新のコミットだけでよいので
 
       - name: Setup Docker Buildx
         id: buildx
@@ -91,7 +90,6 @@ jobs:
       - name: Take Before Screenshots
         if: steps.base-ss-cache.outputs.cache-hit != 'true'
         run: docker compose run playwright bash -c "chmod +x ./wait.sh && ./wait.sh next:3000 && npm run ss-before"
-        continue-on-error: true
 
       # reg-cliによる比較
       - name: Compare Screenshots
@@ -105,7 +103,7 @@ jobs:
           name: screen-shot ${{ github.sha }} # gitshaでスクリーンショットを保存
           path: |
             playwright/vrt
-          retention-days: 30
+          retention-days: 30 # とりあえず１カ月保存
 
       - name: Comment Results on PR
         uses: actions/github-script@v7
