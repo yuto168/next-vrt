@@ -152,7 +152,7 @@ jobs:
             // コメントの投稿
             await github.rest.issues.createComment(params);
 
-      # コンテナ停止hoge
+      # コンテナ停止
       - name: Cleanup Docker Environment
         if: always()
         run: docker compose down --rmi all --volumes --remove-orphans
