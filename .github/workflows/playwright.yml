@@ -50,6 +50,7 @@ jobs:
           cache-from: type=gha,scope=playwright
           cache-to: type=gha,mode=max,scope=playwright
 
+        # コンテナ起動
       - name: Start Next Containers
         run: docker compose up next -d
 
