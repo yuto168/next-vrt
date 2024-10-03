@@ -207,7 +207,8 @@ jobs:
               ["🔴 Changed",  "🟡 New",        "🟤  Deleted",  "🔵 Passing"],
               [stats.changed, stats.newItems, stats.deleted, stats.passing]
             })
-
+            .addHeading("📊 Download Report", 3)
+            .addLink('You can download the report from the artifact here', `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`)
 
             const params = {
               owner: context.repo.owner,
