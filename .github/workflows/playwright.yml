@@ -5,7 +5,6 @@ on:
 
 permissions:
   contents: read
-  issues: write
   pull-requests: write
 
 jobs:
@@ -189,6 +188,27 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
+            const fs = require('fs');
+            const log = fs.readFileSync('playwright/vrt/reports/report.json', 'utf8');
+            console.log(log);
+            const json = JSON.parse(log);
+            console.log(json);
+
+            const stats = {
+              changed: json.failedItems.length.toString(),
+              newItems: json.newItems.length.toString(),
+              deleted: json.deletedItems.length.toString(),
+              passing: json.passedItems.length.toString()
+            };
+
+            await core.summary
+            .addHeading('📸 Visual Regression Test Results')
+            .addTable({
+              ["🔴 Changed",  "🟡 New",        "🟤  Deleted",  "🔵 Passing"],
+              [stats.changed, stats.newItems, stats.deleted, stats.passing]
+            })
+
+
             const params = {
               owner: context.repo.owner,
               repo: context.repo.repo,
