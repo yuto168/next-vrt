@@ -28,7 +28,7 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v3
 
-      # イメージのキャッシュは必要に応じて利用する。暫定でビルドキャッシュのみ利用
+      # 暫定でビルドキャッシュのみ利用
       - name: Cache Front Docker Layers
         uses: docker/build-push-action@v4
         with:
@@ -39,7 +39,7 @@ jobs:
           cache-from: type=gha,scope=next
           cache-to: type=gha,mode=max,scope=next
 
-      # イメージのキャッシュは必要に応じて利用する。暫定でビルドキャッシュのみ利用
+      # 暫定でビルドキャッシュのみ利用
       - name: Cache Playwright Docker Layers
         uses: docker/build-push-action@v4
         with:
