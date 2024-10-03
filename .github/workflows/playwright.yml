@@ -95,11 +95,11 @@ jobs:
       - name: Start Next Containers
         run: docker compose up next -d
 
-      - name: Check If Frontend Container Is Running
-        run: docker compose ps next
-
       - name: Take Screenshot Of The Current State
         run: docker compose run playwright bash -c "chmod +x ./wait.sh && ./wait.sh next:3000 && npm run ss-after"
+
+      - name: Chmod Playwright Directory
+        run: chmod -R 777 playwright
 
       - name: Restore Base Screenshots Cache
         uses: actions/cache@v3
@@ -107,11 +107,6 @@ jobs:
         with:
           path: playwright/vrt/before
           key: screenshot-base-${{ github.event.pull_request.base.sha }}
-
-      # baseブランチの名前
-      # - name: Echo Base Ref
-      #   if: steps.download-base-ss.outcome == 'failure'
-      #   run: echo ${{github.base_ref}}
 
       # baseブランチのfrontコードを取得
       - name: Checkout Base Branch
@@ -125,9 +120,6 @@ jobs:
           sparse-checkout-cone-mode: false
           path: base-front
 
-      - name: List Front After Checkout
-        run: ls -la base-front/front
-
       # baseブランチのfrontディレクトリをfrontディレクトリにコピーして、元のbase-frontディレクトリを削除
       - name: Copy Base-Front To Front
         if: steps.base-ss-cache.outputs.cache-hit != 'true'
@@ -135,9 +127,6 @@ jobs:
           sudo rm -rf front
           sudo mv base-front/front front
           sudo rm -rf base-front
-
-      - name: List Front After Copy
-        run: ls -la front
 
         # frontコンテナの再起動
       - name: Restart Front Container
