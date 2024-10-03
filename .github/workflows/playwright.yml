@@ -189,7 +189,6 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            const core = require('@actions/core');
 
             // レポートファイルの読み込み
             const reportPath = 'playwright/vrt/reports/report.json';
