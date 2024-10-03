@@ -101,21 +101,21 @@ jobs:
       - name: Take Screenshot Of The Current State
         run: docker compose run playwright bash -c "chmod +x ./wait.sh && ./wait.sh next:3000 && npm run ss-after"
 
-      # 親ブランチのgitshaでスクリーンショットを取得
-      - name: Download Base Screenshots
-        id: download-base-ss
-        uses: actions/download-artifact@v4
-        continue-on-error: true
+      - name: Restore Base Screenshots Cache
+        uses: actions/cache@v3
+        id: base-ss-cache
         with:
-          name: screen-shot-for-base
+          path: playwright/vrt/before
+          key: screenshot-base-${{ github.event.pull_request.base.sha }}
 
-        # baseブランチの名前
+      # baseブランチの名前
       # - name: Echo Base Ref
       #   if: steps.download-base-ss.outcome == 'failure'
       #   run: echo ${{github.base_ref}}
 
       # baseブランチのfrontコードを取得
       - name: Checkout Base Branch
+        if: steps.base-ss-cache.outputs.cache-hit != 'true'
         uses: actions/checkout@v4 # リポジトリをチェックアウト
         with:
           ref: ${{github.base_ref}} # ベースブランチを指定
@@ -128,11 +128,9 @@ jobs:
       - name: List Front After Checkout
         run: ls -la base-front/front
 
-      # # baseブランチのfrontディレクトリをfrontディレクトリにコピーして、元のbase-frontディレクトリを削除
-      # - name: Copy Base-Front To Front
-      #   run: sudo rm -rf front/app && sudo cp -rf base-front/front/app front/app && sudo rm -rf base-front
       # baseブランチのfrontディレクトリをfrontディレクトリにコピーして、元のbase-frontディレクトリを削除
       - name: Copy Base-Front To Front
+        if: steps.base-ss-cache.outputs.cache-hit != 'true'
         run: |
           sudo rm -rf front
           sudo mv base-front/front front
@@ -143,10 +141,12 @@ jobs:
 
         # frontコンテナの再起動
       - name: Restart Front Container
+        if: steps.base-ss-cache.outputs.cache-hit != 'true'
         run: docker compose restart next
 
       # beforeのスクリーンショットを取得
       - name: Take Before Screenshots
+        if: steps.base-ss-cache.outputs.cache-hit != 'true'
         run: docker compose run playwright bash -c "chmod +x ./wait.sh && ./wait.sh next:3000 && npm run ss-before"
         continue-on-error: true
 
@@ -155,14 +155,12 @@ jobs:
         run: docker compose run playwright bash -c "npm run reg"
         continue-on-error: true
 
-      - name: Upload Screenshots of Base Branch
-        uses: actions/upload-artifact@v4
-        if: always()
+      - name: Cache Base Screenshots
+        uses: actions/cache/save@v3
+        id: vrt-cache
         with:
-          name: screen-shot-for-base # gitshaでスクリーンショットを保存
-          path: |
-            playwright/vrt/before
-          retention-days: 30
+          path: playwright/vrt/before
+          key: screenshot-base-${{ github.event.pull_request.base.sha }}
 
       - name: Upload VRT Reports
         uses: actions/upload-artifact@v4
