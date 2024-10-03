@@ -103,6 +103,7 @@ jobs:
 
       - name: Upload VRT Reports
         uses: actions/upload-artifact@v4
+        id: upload-vrt-reports
         if: always()
         with:
           name: screen-shot ${{ github.sha }} # gitshaでスクリーンショットを保存
@@ -128,14 +129,16 @@ jobs:
               passed: json.passedItems.length.toString(),
             };
 
+
             // Markdown形式のレポート作成
             const markdown = await core.summary
-              .addHeading('📸 Visual Regression Test Results', 3)
+              .addHeading(`📸 Visual Regression Test Results`, 3)
               .addTable([
                 ["🔴 Changed Items",  "🟡 New Items",        "🟤 Deleted Items",  "🔵 Passed Items"],
                 [result.changed, result.newItems, result.deleted, result.passed]
               ])
               .addHeading("Download Report", 3)
+              .addText(`${{steps.upload-vrt-reports.outputs.artifact-url}}`)
               .addLink('You can download report from here', 
                 `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`)
               .stringify();
