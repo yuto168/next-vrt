@@ -137,10 +137,8 @@ jobs:
                 ["🔴 Changed Items",  "🟡 New Items",        "🟤 Deleted Items",  "🔵 Passed Items"],
                 [result.changed, result.newItems, result.deleted, result.passed]
               ])
-              .addHeading("Download Report", 3)
-              .addHeading(`${{steps.upload-vrt-reports.outputs.artifact-url}}`)
               .addLink('You can download report from here', 
-                `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`)
+               `${{steps.upload-vrt-reports.outputs.artifact-url}}`)
               .stringify();
 
             // コメントのパラメータ作成
