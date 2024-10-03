@@ -26,52 +26,6 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v2
 
-      #   # ポイント 2 キャッシュを利用する
-      # - name: Cache Next Docker Layers
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: /tmp/.buildx-cache-next
-      #     # キャッシュキー
-      #     key: ${{ github.ref }}-${{ github.sha }}-next
-      #     # keyがヒットしなかった場合に利用するキャッシュキー
-      #     restore-keys: |
-      #       ${{ github.ref }}
-      #       refs/head/master
-
-      #   # ポイント 2 キャッシュを利用する
-      # - name: Cache Playwright Docker Layers
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: /tmp/.buildx-cache-playwright
-      #     key: ${{ github.ref }}-${{ github.sha }}-playwright
-      #     restore-keys: |
-      #       ${{ github.ref }}
-      #       refs/head/master
-
-      # - name: Cache Next Docker Layers Local
-      #   uses: docker/build-push-action@v4
-      #   with:
-      #     load: true
-      #     push: false
-      #     context: .
-      #     builder: ${{ steps.buildx.outputs.name }}
-      #     file: ./infra/next/Dockerfile
-      #     tags: my-app-react-reg-suit-next
-      #     cache-from: type=local,src=/tmp/.buildx-cache-next
-      #     cache-to: type=local,dest=/tmp/.buildx-cache-new-next,mode=max
-
-      # - name: Cache Playwright Docker Layers Local
-      #   uses: docker/build-push-action@v4
-      #   with:
-      #     load: true
-      #     push: false
-      #     context: .
-      #     builder: ${{ steps.buildx.outputs.name }}
-      #     file: ./infra/playwright/Dockerfile
-      #     tags: my-app-react-reg-suit-playwright
-      #     cache-from: type=local,src=/tmp/.buildx-cache-playwright
-      #     cache-to: type=local,dest=/tmp/.buildx-cache-new-playwright,mode=max
-
       # イメージのキャッシュは必要に応じて利用する。暫定でビルドキャッシュのみ利用
       - name: Cache Front Docker Layers
         uses: docker/build-push-action@v4
@@ -98,9 +52,6 @@ jobs:
 
       - name: Start Next Containers
         run: docker compose up next -d
-
-      - name: who am i
-        run: whoami
 
       - name: Take Screenshot Of The Current State
         run: docker compose run playwright bash -c "chmod +x ./wait.sh && ./wait.sh next:3000 && npm run ss-after"
@@ -160,30 +111,6 @@ jobs:
             playwright/vrt
           retention-days: 30
 
-      # - name: Fix Permissions Of VRT Reports
-      #   run: |
-      #     sudo chmod -c -R +rX "playwright/vrt" | while read line; do
-      #       echo "::warning title=Invalid file permissions automatically fixed::$line"
-      #     done
-
-      # - name: Upload VRT Reports To Page Artifact
-      #   uses: actions/upload-pages-artifact@v3.0.1
-      #   if: always()
-      #   with:
-      #     name: screen-shot ${{ github.sha }} # gitshaでスクリーンショットを保存
-      #     retention-days: 30
-      #     path: playwright/vrt
-
-      #   # Temp fix
-      #   # https://github.com/docker/build-push-action/issues/252
-      #   # https://github.com/moby/buildkit/issues/1896
-      # - name: Move Cache
-      #   run: |
-      #     rm -rf /tmp/.buildx-cache-next
-      #     rm -rf /tmp/.buildx-cache-playwright
-      #     mv /tmp/.buildx-cache-new-next /tmp/.buildx-cache-next
-      #     mv /tmp/.buildx-cache-new-playwright /tmp/.buildx-cache-playwright
-
       - name: Comment Results on PR
         uses: actions/github-script@v7
         with:
@@ -192,26 +119,25 @@ jobs:
 
             // レポートファイルの読み込み
             const reportPath = 'playwright/vrt/reports/report.json';
-            const log = fs.readFileSync(reportPath, 'utf8');
-            const json = JSON.parse(log);
+            const json = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
 
-            // 統計データの作成
-            const stats = {
+            // VRT結果抽出
+            const result = {
               changed: json.failedItems.length.toString(),
               newItems: json.newItems.length.toString(),
               deleted: json.deletedItems.length.toString(),
-              passing: json.passedItems.length.toString(),
+              passed: json.passedItems.length.toString(),
             };
 
             // Markdown形式のレポート作成
             const markdown = await core.summary
               .addHeading('📸 Visual Regression Test Results', 3)
               .addTable([
-                ["🔴 Changed",  "🟡 New",        "🟤 Deleted",  "🔵 Passing"],
-                [stats.changed, stats.newItems, stats.deleted, stats.passing]
+                ["🔴 Changed Items",  "🟡 New Items",        "🟤 Deleted Items",  "🔵 Passed Items"],
+                [result.changed, result.newItems, result.deleted, result.passed]
               ])
-              .addHeading("📊 Download Report", 3)
-              .addLink('You can download the report from the artifact here', 
+              .addHeading("Download Report", 3)
+              .addLink('You can download report from here', 
                 `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`)
               .stringify();
 
@@ -230,23 +156,3 @@ jobs:
       - name: Cleanup Docker Environment
         if: always()
         run: docker compose down --rmi all --volumes --remove-orphans
-
-  # deploy-to-github-pages:
-  #   runs-on: ubuntu-latest
-  #   needs: vrt-docker
-  #   # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
-  #   permissions:
-  #     pages: write # to deploy to Pages
-  #     id-token: write # to verify the deployment originates from an appropriate source
-
-  #   # Deploy to the github-pages environment
-  #   environment:
-  #     name: github-pages
-  #     url: ${{ steps.deployment.outputs.page_url }}
-
-  #   steps:
-  #     - name: Deploy To GitHub Pages
-  #       id: deployment
-  #       uses: actions/deploy-pages@v4 # or specific "vX.X.X" version tag for this action
-  #       with:
-  #         artifact_name: screen-shot ${{ github.sha }}
