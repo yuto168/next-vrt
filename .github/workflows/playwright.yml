@@ -184,39 +184,48 @@ jobs:
       #     mv /tmp/.buildx-cache-new-next /tmp/.buildx-cache-next
       #     mv /tmp/.buildx-cache-new-playwright /tmp/.buildx-cache-playwright
 
-      - name: Commnet Results on PR
+      - name: Comment Results on PR
         uses: actions/github-script@v7
         with:
           script: |
             const fs = require('fs');
-            const log = fs.readFileSync('playwright/vrt/reports/report.json', 'utf8');
-            console.log(log);
-            const json = JSON.parse(log);
-            console.log(json);
+            const core = require('@actions/core');
 
+            // レポートファイルの読み込み
+            const reportPath = 'playwright/vrt/reports/report.json';
+            const log = fs.readFileSync(reportPath, 'utf8');
+            const json = JSON.parse(log);
+
+            // 統計データの作成
             const stats = {
               changed: json.failedItems.length.toString(),
               newItems: json.newItems.length.toString(),
               deleted: json.deletedItems.length.toString(),
-              passing: json.passedItems.length.toString()
+              passing: json.passedItems.length.toString(),
             };
 
-            await core.summary
-            .addHeading('📸 Visual Regression Test Results')
-            .addTable({
-              ["🔴 Changed",  "🟡 New",        "🟤  Deleted",  "🔵 Passing"],
-              [stats.changed, stats.newItems, stats.deleted, stats.passing]
-            })
-            .addHeading("📊 Download Report", 3)
-            .addLink('You can download the report from the artifact here', `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`)
+            // Markdown形式のレポート作成
+            const markdown = await core.summary
+              .addHeading('📸 Visual Regression Test Results', 3)
+              .addTable([
+                ["🔴 Changed",  "🟡 New",        "🟤 Deleted",  "🔵 Passing"],
+                [stats.changed, stats.newItems, stats.deleted, stats.passing]
+              ])
+              .addHeading("📊 Download Report", 3)
+              .addLink('You can download the report from the artifact here', 
+                `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`)
+              .stringify();
 
+            // コメントのパラメータ作成
             const params = {
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: '👋 Thanks for reporting!'
-            }
-            await github.rest.issues.createComment(params)
+              body: markdown,
+            };
+
+            // コメントの投稿
+            await github.rest.issues.createComment(params);
 
       # 前のジョブの成功失敗に関係なく実行
       - name: Cleanup Docker Environment
