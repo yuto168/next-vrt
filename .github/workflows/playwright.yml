@@ -189,8 +189,9 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: '## Visual Regression Test Results\n\n'
+              body: '👋 Thanks for reporting!'
             }
+            await github.rest.issues.createComment(params)
 
       # 前のジョブの成功失敗に関係なく実行
       - name: Cleanup Docker Environment
