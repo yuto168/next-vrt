@@ -107,7 +107,7 @@ jobs:
         uses: actions/download-artifact@v4
         continue-on-error: true
         with:
-          name: screen-shot-for-base ${{ github.event.pull_request.base.sha }}
+          name: screen-shot-for-base
 
         # baseブランチの名前
       # - name: Echo Base Ref
@@ -159,7 +159,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: screen-shot-for-base ${{ github.event.pull_request.base.sha }} # gitshaでスクリーンショットを保存
+          name: screen-shot-for-base # gitshaでスクリーンショットを保存
           path: |
             playwright/vrt/before
           retention-days: 30
