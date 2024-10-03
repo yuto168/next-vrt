@@ -177,6 +177,18 @@ jobs:
       #     mv /tmp/.buildx-cache-new-next /tmp/.buildx-cache-next
       #     mv /tmp/.buildx-cache-new-playwright /tmp/.buildx-cache-playwright
 
+      - name: Commnet Results on PR
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const params = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: '## Visual Regression Test Results\n\n'
+            }
+
       # 前のジョブの成功失敗に関係なく実行
       - name: Cleanup Docker Environment
         if: always()
