@@ -25,7 +25,6 @@ services:
     tty: true
     ipc: host # メモリ不足エラー対策
     volumes:
-    # ローカルで動かしたい場合にも備えられるようにマウントで対処したいよなあ
       - ./playwright:/playwright
       - playwright-node-modules:/playwright/node_modules
       - /tmp/.X11-unix:/tmp/.X11-unix
