@@ -3,10 +3,6 @@ on:
   pull_request:
     types: [labeled, synchronize]
 
-permissions:
-  contents: read
-  pull-requests: write
-
 # 連続push対策
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -15,6 +11,8 @@ concurrency:
 jobs:
   vrt-docker:
     if: contains(github.event.pull_request.labels.*.name, 'vrt')
+    permissions:
+      pull-requests: write
     timeout-minutes: 60
     runs-on: ubuntu-20.04
     steps:
