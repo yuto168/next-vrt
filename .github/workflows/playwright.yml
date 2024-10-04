@@ -55,7 +55,10 @@ jobs:
         run: docker compose up next -d
 
       - name: Take Screenshot Of The Current State
-        run: docker compose run playwright bash -c "chmod +x ./wait.sh && ./wait.sh next:3000 && npm run ss-after && sudo chmod -R 777 playwright"
+        run: docker compose run playwright bash -c "chmod +x ./wait.sh && ./wait.sh next:3000 && npm run ss-after"
+
+      - name: Chmod Playwright Directory
+        run: chmod -R 777 playwright
 
       - name: Restore Base Screenshots Cache
         uses: actions/cache@v3
