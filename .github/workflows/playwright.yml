@@ -57,8 +57,8 @@ jobs:
         # コンテナ起動+テスト実行
       - name: Start Next Containers and Take Screenshot
         run: |
-          docker-compose up next -d
-          docker-compose run playwright bash -c "chmod +x ./wait.sh && ./wait.sh next:3000 && npm run ss-after"
+          docker compose up next -d
+          docker compose run playwright bash -c "chmod +x ./wait.sh && ./wait.sh next:3000 && npm run ss-after"
 
       - name: Chmod Playwright Directory
         run: sudo chmod -R 777 playwright
@@ -94,16 +94,16 @@ jobs:
         # frontコンテナの再起動
       - name: Restart Front Container
         if: steps.base-ss-cache.outputs.cache-hit != 'true'
-        run: docker-compose restart next
+        run: docker compose restart next
 
       # beforeのスクリーンショットを取得
       - name: Take Before Screenshots
         if: steps.base-ss-cache.outputs.cache-hit != 'true'
-        run: docker-compose run playwright bash -c "./wait.sh next:3000 && npm run ss-before"
+        run: docker compose run playwright bash -c "./wait.sh next:3000 && npm run ss-before"
 
       # reg-cliによる比較
       - name: Compare Screenshots
-        run: docker-compose run playwright bash -c "npm run reg"
+        run: docker compose run playwright bash -c "npm run reg"
         continue-on-error: true
 
       - name: Upload VRT Reports
@@ -159,4 +159,4 @@ jobs:
       # コンテナ停止
       - name: Cleanup Docker Environment
         if: always()
-        run: docker-compose down --rmi all --volumes --remove-orphans
+        run: docker compose down --rmi all --volumes --remove-orphans
