@@ -55,7 +55,7 @@ jobs:
         run: docker compose up next -d
 
       - name: Take Screenshot Of The Current State
-        run: docker compose run playwright bash -c "./wait.sh next:3000 && npm run ss-after"
+        run: docker compose run playwright bash -c "chmod +x ./wait.sh && ./wait.sh next:3000 && npm run ss-after"
 
       - name: Chmod Playwright Directory
         run: sudo chmod -R 777 playwright
@@ -94,7 +94,7 @@ jobs:
       # beforeのスクリーンショットを取得
       - name: Take Before Screenshots
         if: steps.base-ss-cache.outputs.cache-hit != 'true'
-        run: docker compose run playwright bash -c "./wait.sh next:3000 && npm run ss-before"
+        run: docker compose run playwright bash -c "chmod +x ./wait.sh && ./wait.sh next:3000 && npm run ss-before"
 
       # reg-cliによる比較
       - name: Compare Screenshots
