@@ -14,6 +14,12 @@ jobs:
     permissions:
       pull-requests: write
     timeout-minutes: 60
+
+    env:
+      PORT: 3000
+      FRONT_CONTAINER: next
+      PLAYWRIGHT_CONTAINER_NAME: playwright
+
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout Current Branch
@@ -48,12 +54,11 @@ jobs:
           cache-from: type=gha,scope=playwright
           cache-to: type=gha,mode=max,scope=playwright
 
-        # コンテナ起動
-      - name: Start Next Containers
-        run: docker compose up next -d
-
-      - name: Take Screenshot Of The Current State
-        run: docker compose run playwright bash -c "chmod +x ./wait.sh && ./wait.sh next:3000 && npm run ss-after"
+        # コンテナ起動+テスト実行
+      - name: Start Next Containers and Take Screenshot
+        run: |
+          docker compose up $FRONT_CONTAINER -d
+          docker compose run $PLAYWRIGHT_CONTAINER_NAME bash -c "chmod +x ./wait.sh && ./wait.sh $FRONT_CONTAINER:$PORT && npm run ss-after"
 
       - name: Chmod Playwright Directory
         run: sudo chmod -R 777 playwright
