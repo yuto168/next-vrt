@@ -79,6 +79,8 @@ jobs:
       - name: Copy Base-Front To Front
         if: steps.base-ss-cache.outputs.cache-hit != 'true'
         run: |
+          id
+          ls -la
           sudo rm -rf front
           sudo mv base-front/front front
           sudo rm -rf base-front
