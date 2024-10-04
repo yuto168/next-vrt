@@ -8,6 +8,3 @@ COPY ./playwright/package*.json .
 
 # 依存関係のインストール
 RUN npm ci
-
-# RUNでやった権限付与がなぜリセットされるのか
-CMD ["bash", "-c", "chmod +x ./wait.sh && ./wait.sh next:3000"]
