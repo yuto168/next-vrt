@@ -12,6 +12,7 @@ jobs:
   vrt-docker:
     if: contains(github.event.pull_request.labels.*.name, 'vrt')
     permissions:
+      id-token: write
       pull-requests: write
     timeout-minutes: 60
 
@@ -114,6 +115,18 @@ jobs:
           path: |
             playwright/vrt
           retention-days: 30 # とりあえず１カ月保存
+
+      # AWSへの認証
+      - name: Credentials for AWS
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: "ap-southeast-2" # リージョンを指定
+          role-to-assume: "arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/oidc-example-gha" # 作成した IAM ロールの ARN "#self hosted runnnerの場合は不要"
+
+      # s3へのアップロード
+      - name: Deploy VRT Reports to S3
+        working-directory: ./playwright/vrt
+        run: aws s3 cp . s3://ci-cd-demo-reg-suit-vrt-screenshots/vrt-cicd-demo/${{github.sha}} --recursive
 
       - name: Comment Results on PR
         uses: actions/github-script@v7
