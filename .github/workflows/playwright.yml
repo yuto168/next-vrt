@@ -12,6 +12,7 @@ jobs:
   vrt-docker:
     if: contains(github.event.pull_request.labels.*.name, 'vrt')
     permissions:
+      contents: read
       id-token: write
       pull-requests: write
     timeout-minutes: 60
