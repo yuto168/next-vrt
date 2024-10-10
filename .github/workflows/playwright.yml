@@ -110,6 +110,7 @@ jobs:
         if: steps.base-ss-cache.outputs.cache-hit != 'true'
         run: |
           docker compose up next -d --force-recreate
+          docker compose exec -T next npm i
       # docker compose exec -T next npm ci
       # docker compose exec -T next npm run dev
       # docker compose up next -d --force-recreate
