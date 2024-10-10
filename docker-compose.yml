@@ -6,7 +6,6 @@ services:
     working_dir: /app
     volumes:
       - ./front:/app
-      - next-node-modules:/app/node_modules
     environment:
       # hot reloadを有効にするためらしい
       - WATCHPACK_POLLING=true
@@ -43,5 +42,4 @@ networks:
     driver: bridge # ネットワークモードをbridgeに設定
 
 volumes:
-  next-node-modules:
   playwright-node-modules:
