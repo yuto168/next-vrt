@@ -96,13 +96,13 @@ jobs:
           sudo rm -rf front
           sudo mv base-front/front front
           sudo rm -rf base-front
+          ls -la front
 
         # frontコンテナの再起動
       - name: Restart Front Container
         if: steps.base-ss-cache.outputs.cache-hit != 'true'
         run: |
-          docker compose down next
-          docker compose up -d next
+          make restart
 
       - name: npm list front
         run: |
