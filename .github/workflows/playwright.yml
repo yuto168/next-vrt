@@ -109,24 +109,26 @@ jobs:
       - name: Restart Front Container
         if: steps.base-ss-cache.outputs.cache-hit != 'true'
         run: |
-          docker compose run next bash -c "npm i"
-          docker compose up next -d
+          docker compose up next -d --force-recreate
+          docker compose run playwright bash -c "chmod +x ./wait.sh && ./wait.sh next:3000 && npm run ss-before"
 
+        # npm listだから失敗しているとかはあるのか。
+        # docker compose run next bash -c "npm i"
       # 今のところ、recreate後にnpm iしたら一応成功するが、おそらくdevの方に反映されていないよ。
       # docker compose exec -T next npm ci
       # docker compose exec -T next n pm run dev
       # docker compose exec -T next npm cache verify --force
 
-      - name: npm list front
-        run: |
-          ls -la front
-          docker compose exec -T next ls -la
-          docker compose exec -T next npm list
+      # - name: npm list front
+      #   run: |
+      #     ls -la front
+      #     docker compose exec -T next ls -la
+      #     docker compose exec -T next npm list
 
       # beforeのスクリーンショットを取得
-      - name: Take Before Screenshots
-        if: steps.base-ss-cache.outputs.cache-hit != 'true'
-        run: docker compose run playwright bash -c "./wait.sh next:3000 && npm run ss-before"
+      # - name: Take Before Screenshots
+      #   if: steps.base-ss-cache.outputs.cache-hit != 'true'
+      #   run: docker compose run playwright bash -c "./wait.sh next:3000 && npm run ss-before"
 
       # reg-cliによる比較
       - name: Compare Screenshots
