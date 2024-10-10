@@ -87,6 +87,10 @@ jobs:
         run: |
           docker compose exec -T next npm list
 
+      - name: front container down
+        run: |
+          docker compose down --volumes --remove-orphans
+
       # baseブランチのfrontディレクトリをfrontディレクトリにコピーして、元のbase-frontディレクトリを削除
       - name: Copy Base-Front To Front
         if: steps.base-ss-cache.outputs.cache-hit != 'true'
@@ -104,10 +108,10 @@ jobs:
       - name: Restart Front Container
         if: steps.base-ss-cache.outputs.cache-hit != 'true'
         run: |
-          docker compose exec -T next npm cache verify --force
           docker compose exec -T next npm ci
           docker compose exec -T next npm run dev
-        # docker compose up next -d --force-recreate
+      # docker compose up next -d --force-recreate
+      # docker compose exec -T next npm cache verify --force
 
       - name: npm list front
         run: |
