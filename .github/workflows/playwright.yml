@@ -96,7 +96,8 @@ jobs:
         if: steps.base-ss-cache.outputs.cache-hit != 'true'
         run: |
           ls -la front
-          sudo cp -r base-front/front/* front/ 
+          sudo rm -rf front
+          sudo mv base-front/front front
           sudo rm -rf base-front
           ls -la front
 
