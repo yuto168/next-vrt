@@ -101,12 +101,11 @@ jobs:
         # frontコンテナの再起動
       - name: Restart Front Container
         if: steps.base-ss-cache.outputs.cache-hit != 'true'
-        run: docker compose restart next
+        run: docker restart next
 
       - name: npm list front
         run: |
           ls -la front
-          docker compose exec -T next npm i && npm run dev
           docker compose exec -T next npm list
 
       # beforeのスクリーンショットを取得
