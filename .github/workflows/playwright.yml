@@ -87,9 +87,9 @@ jobs:
         run: |
           docker compose exec -T next npm list
 
-      - name: front container down
-        run: |
-          docker compose down --volumes --remove-orphans
+      # - name: front container down
+      #   run: |
+      #     docker compose down --volumes --remove-orphans
 
       # baseブランチのfrontディレクトリをfrontディレクトリにコピーして、元のbase-frontディレクトリを削除
       - name: Copy Base-Front To Front
@@ -109,7 +109,9 @@ jobs:
       - name: Restart Front Container
         if: steps.base-ss-cache.outputs.cache-hit != 'true'
         run: |
+          docker compose down --volumes --remove-orphans
           docker compose up next -d --force-recreate
+          docker compose exec -T next npm run list
           docker compose run playwright bash -c "chmod +x ./wait.sh && ./wait.sh next:3000 && npm run ss-before"
 
         # npm listだから失敗しているとかはあるのか。
