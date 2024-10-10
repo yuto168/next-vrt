@@ -83,6 +83,11 @@ jobs:
           sparse-checkout-cone-mode: false
           path: base-front
 
+      - name: ls la
+        run: |
+          ls -la
+          ls -la front
+
       # baseブランチのfrontディレクトリをfrontディレクトリにコピーして、元のbase-frontディレクトリを削除
       - name: Copy Base-Front To Front
         if: steps.base-ss-cache.outputs.cache-hit != 'true'
@@ -97,6 +102,11 @@ jobs:
       - name: Restart Front Container
         if: steps.base-ss-cache.outputs.cache-hit != 'true'
         run: docker compose restart next
+
+      - name: ls la
+        run: |
+          ls -la
+          ls -la front
 
       # beforeのスクリーンショットを取得
       - name: Take Before Screenshots
