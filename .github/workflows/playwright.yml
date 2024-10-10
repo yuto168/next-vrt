@@ -120,7 +120,7 @@ jobs:
       - name: npm list front
         run: |
           ls -la front
-          docker compose exec -T ls -la
+          docker compose exec -T next ls -la
           docker compose exec -T next npm list
 
       # beforeのスクリーンショットを取得
