@@ -104,6 +104,8 @@ jobs:
 
       - name: npm list front
         run: |
+          docker compose exec -T next npm i
+          docker compose restart next
           docker compose exec -T next npm list
 
       # beforeのスクリーンショットを取得
