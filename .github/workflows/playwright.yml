@@ -111,7 +111,6 @@ jobs:
         if: steps.base-ss-cache.outputs.cache-hit != 'true'
         run: |
           docker compose up next -d --force-recreate
-          docker compose exec -T next npm list
           docker compose run playwright bash -c "chmod +x ./wait.sh && ./wait.sh next:3000 && npm run ss-before"
 
         # npm listだから失敗しているとかはあるのか。
