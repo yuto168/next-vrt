@@ -98,12 +98,17 @@ jobs:
           sudo rm -rf base-front
           ls -la front
 
+      - name: echo front package.json
+        run: |
+          cat front/package.json
+          cat front/package-lock.json
+
         # frontコンテナの再起動
       - name: Restart Front Container
         if: steps.base-ss-cache.outputs.cache-hit != 'true'
         run: |
-          docker compose exec -T next npm i
-          docker compose restart next
+          docker compose exec next npm ci
+          docker compose up next -d --force-recreate
 
       - name: npm list front
         run: |
