@@ -92,7 +92,7 @@ jobs:
         if: steps.base-ss-cache.outputs.cache-hit != 'true'
         run: |
           id
-          ls -la
+          ls -la front
           sudo rm -rf front
           sudo mv base-front/front front
           sudo rm -rf base-front
@@ -102,7 +102,7 @@ jobs:
       - name: Restart Front Container
         if: steps.base-ss-cache.outputs.cache-hit != 'true'
         run: |
-          make restart
+          docker compose up next -d --force-recreate
 
       - name: npm list front
         run: |
