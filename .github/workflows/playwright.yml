@@ -83,10 +83,9 @@ jobs:
           sparse-checkout-cone-mode: false
           path: base-front
 
-      - name: ls la
+      - name: npm list front
         run: |
-          ls -la
-          ls -la front
+          docker compose exec -T next npm list
 
       # baseブランチのfrontディレクトリをfrontディレクトリにコピーして、元のbase-frontディレクトリを削除
       - name: Copy Base-Front To Front
@@ -103,10 +102,9 @@ jobs:
         if: steps.base-ss-cache.outputs.cache-hit != 'true'
         run: docker compose restart next
 
-      - name: ls la
+      - name: npm list front
         run: |
-          ls -la
-          ls -la front
+          docker compose exec -T next npm list
 
       # beforeのスクリーンショットを取得
       - name: Take Before Screenshots
