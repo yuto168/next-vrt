@@ -109,9 +109,10 @@ jobs:
       - name: Restart Front Container
         if: steps.base-ss-cache.outputs.cache-hit != 'true'
         run: |
-          docker compose run next -d bash -c "npm cache verify --force && npm i"
+          docker compose run next -d bash -c "npm i"
           docker compose up next -d --force-recreate
 
+      # 今のところ、recreate後にnpm iしたら一応成功するが、おそらくdevの方に反映されていないよ。
       # docker compose exec -T next npm ci
       # docker compose exec -T next npm run dev
       # docker compose exec -T next npm cache verify --force
