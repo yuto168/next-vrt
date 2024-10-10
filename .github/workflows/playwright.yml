@@ -107,9 +107,10 @@ jobs:
       - name: Restart Front Container
         if: steps.base-ss-cache.outputs.cache-hit != 'true'
         run: |
-          docker compose exec next npm ci
-          docker compose up next -d --force-recreate
-          docker compose exec next npm run dev
+          docker compose exec -T next npm cache clean --force
+          docker compose exec -T next npm ci
+          docker compose exec -T next npm run dev
+        # docker compose up next -d --force-recreate
 
       - name: npm list front
         run: |
