@@ -110,7 +110,7 @@ jobs:
         if: steps.base-ss-cache.outputs.cache-hit != 'true'
         run: |
           docker compose run next bash -c "npm i"
-          docker compose up next -d --force-recreate
+          docker compose up next  --force-recreate
 
       # 今のところ、recreate後にnpm iしたら一応成功するが、おそらくdevの方に反映されていないよ。
       # docker compose exec -T next npm ci
