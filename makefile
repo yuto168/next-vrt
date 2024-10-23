@@ -21,6 +21,8 @@ restart:
 	@make down
 	@make up
 	
+clear-front-node:
+	sudo rm -r  front/node_modules
 vrt-ss-before:
 	docker compose run playwright npm run ss-before
 # 修正後スクリーンショット撮影
