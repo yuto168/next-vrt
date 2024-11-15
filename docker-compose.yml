@@ -7,22 +7,19 @@ services:
     volumes:
       - ./front:/app
     environment:
-      # hot reloadを有効にするためらしい
       - WATCHPACK_POLLING=true
-      # ここのホスト側のパッケージ追加などをコンテナ内のnode_modulesに反映させるため。なので開発時には必要  ci時には不要
     command: sh -c "npm install && npm run dev" 
     networks:
       - common
     ports:
       - "3000:3000"
-      - "6006:6006" # storybook
     container_name: next
 
   playwright:
     build:
       dockerfile: ./infra/playwright/Dockerfile
     tty: true
-    ipc: host # メモリ不足エラー対策
+    ipc: host 
     volumes:
       - ./playwright:/playwright
       - playwright-node-modules:/playwright/node_modules
@@ -33,13 +30,12 @@ services:
     container_name: playwright
     depends_on:
       - next
-    # network_mode: "host"
     networks:
       - common
 
 networks:
   common:
-    driver: bridge # ネットワークモードをbridgeに設定
+    driver: bridge 
 
 volumes:
   playwright-node-modules:
