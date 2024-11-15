@@ -118,19 +118,6 @@ jobs:
             playwright/vrt
           retention-days: 30 # とりあえず１カ月保存
 
-      # TODO: S3へのreportアップロード
-      # # AWSへの認証
-      # - name: Configure AWS credentials from Test account
-      #   uses: aws-actions/configure-aws-credentials@v1
-      #   with:
-      #     aws-region: "ap-southeast-2" # リージョンを指定
-      #     role-to-assume: "arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/oidc-example-gha"
-
-      # # s3へのアップロード
-      # - name: Deploy VRT Reports to S3
-      #   working-directory: ./playwright/vrt
-      #   run: aws s3 cp . s3://ci-cd-demo-reg-suit-vrt-screenshots/vrt-cicd-demo/${{github.sha}} --recursive
-
       - name: Comment Results on PR
         uses: actions/github-script@v7
         with:
